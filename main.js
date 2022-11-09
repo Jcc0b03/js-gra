@@ -92,35 +92,44 @@ let isMovingRight = false;
 let canMoveLeft = true;
 let isMovingLeft = false;
 
+let isGrounded = true;
+let jumpStartedFlag = false;
+
 let player = new Image();
 let playerState = 0;
 let animationFrame = 0;
-function animationHandler(){
-    switch(playerState){
-        case 0:
-            if(animationFrame > graphics.player.idleAnimationSize-1){
-                animationFrame = 0
+async function animationHandler(){
+    if(isGrounded){
+        switch(playerState){
+            case 0:
+                if(animationFrame > graphics.player.idleAnimationSize-1){
+                    animationFrame = 0
+                }
+                player.src = graphics.player.idle[animationFrame];
+                break
+            case 1:
+                if(animationFrame > graphics.player.walkAnimationSize-1){
+                    animationFrame = 0
+                }
+                if(playerCurrentSpeed>0){
+                    player.src = graphics.player.walkRight[animationFrame];
+                }else{
+                    player.src = graphics.player.walkLeft[animationFrame];
+                }
+                break;
+        }
+    }else{
+        if(!jumpStartedFlag){
+            for(let jumpAnimationFrame=0;jumpAnimationFrame<graphics.player.jumpAnimationSize-1;jumpAnimationFrame++){
+                player.src = graphics.player.jump[jumpAnimationFrame];
+                console.log(jumpAnimationFrame)
+                await sleep(60);
             }
-            player.src = graphics.player.idle[animationFrame];
-            break
-        case 1:
-            if(animationFrame > graphics.player.walkAnimationSize-1){
-                animationFrame = 0
-            }
-            if(playerCurrentSpeed>0){
-                player.src = graphics.player.walkRight[animationFrame];
-            }else{
-                player.src = graphics.player.walkLeft[animationFrame];
-            }
-
-            break
-        case 2:
-            playerY -= jumpHeight;
+            jumpStartedFlag=true;
+        }else{
             player.src = graphics.player.jump[2];
-            flipDisplay();
-             
+        }
     }
-    
     if(playerCurrentSpeed < 0&&canMoveLeft){
         playerX += playerCurrentSpeed;
     }else if(playerCurrentSpeed > 0&&canMoveRight){
@@ -188,10 +197,15 @@ function keyUpHandler(e){
     }
 }
 
+//utils
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 window.addEventListener("graphics_loaded", () => {
     setInterval(animationHandler, 50)
 })
 
 window.addEventListener("graphics_loaded", () => {
-    setInterval(mainGameLoop, 50)
+    setInterval(mainGameLoop, 60)
 })
