@@ -20,6 +20,13 @@ const graphics = {
         walkLeft: [],
         jumpAnimationSize: 4,
         jump: [],
+    },
+    bomb: {
+        bomb_off: "",
+        bombOnAnimationSize: 10,
+        bomb_on: [],
+        explosionAnimationSize: 9,
+        explosion: [] 
     }
 }
 
@@ -60,7 +67,17 @@ const loadGraphics = function(){
             let imageToBase64Converter = new FileReader();
             imageToBase64Converter.addEventListener("load", () => {
                 graphics.player.jump.push(imageToBase64Converter.result);
-                if(graphics.player.jump.length==graphics.player.jumpAnimationSize){
+            });
+            imageToBase64Converter.readAsDataURL(imageBlob);
+        })
+    }
+
+    for(let i = 1; i<=graphics.bomb.bombOnAnimationSize; i+=1){
+        fetch(`resources/Sprites/bomb/on/${i}.png`).then(image => image.blob()).then(imageBlob => {
+            let imageToBase64Converter = new FileReader();
+            imageToBase64Converter.addEventListener("load", () => {
+                graphics.bomb.bomb_on.push(imageToBase64Converter.result);
+                if(graphics.bomb.bomb_on.length==graphics.bomb.bombOnAnimationSize){
                     window.dispatchEvent(new Event("graphics_loaded"));
                 }
             });
@@ -73,71 +90,18 @@ const loadGraphics = function(){
 window.addEventListener("load", loadGraphics);
 
 //update display
-async function flipDisplay(){
+async function render(){
     await mainGameCanvas2dContext.clearRect(0,0,width,height);
-    mainGameCanvas2dContext.drawImage(player, playerX, playerY);
+    playerObject.render();
+    bombObject.render();
 }
 
-//animations and controls of player
-let playerX = 0;
-let playerY = height-58;
+let scrollBackground = false;
 
-let playerMaxSpeed = 5;
-let playerCurrentSpeed = 0;
-let jumpHeight = 20;
-
-let canMoveRight = true;
-let isMovingRight = false;
-
-let canMoveLeft = true;
-let isMovingLeft = false;
-
-let isGrounded = true;
-let jumpStartedFlag = false;
-
-let player = new Image();
-let playerState = 0;
-let animationFrame = 0;
 async function animationHandler(){
-    if(isGrounded){
-        switch(playerState){
-            case 0:
-                if(animationFrame > graphics.player.idleAnimationSize-1){
-                    animationFrame = 0
-                }
-                player.src = graphics.player.idle[animationFrame];
-                break
-            case 1:
-                if(animationFrame > graphics.player.walkAnimationSize-1){
-                    animationFrame = 0
-                }
-                if(playerCurrentSpeed>0){
-                    player.src = graphics.player.walkRight[animationFrame];
-                }else{
-                    player.src = graphics.player.walkLeft[animationFrame];
-                }
-                break;
-        }
-    }else{
-        if(!jumpStartedFlag){
-            for(let jumpAnimationFrame=0;jumpAnimationFrame<graphics.player.jumpAnimationSize-1;jumpAnimationFrame++){
-                player.src = graphics.player.jump[jumpAnimationFrame];
-                console.log(jumpAnimationFrame)
-                await sleep(60);
-            }
-            jumpStartedFlag=true;
-        }else{
-            player.src = graphics.player.jump[2];
-        }
-    }
-    if(playerCurrentSpeed < 0&&canMoveLeft){
-        playerX += playerCurrentSpeed;
-    }else if(playerCurrentSpeed > 0&&canMoveRight){
-        playerX += playerCurrentSpeed;
-    }
-    flipDisplay();
-    animationFrame += 1
-    console.log(playerX, width)
+    bombObject.animate();
+    playerObject.animate();
+    render();
 }
 
 window.addEventListener("keydown", keyDownHandler);
@@ -146,16 +110,10 @@ window.addEventListener("keyup", keyUpHandler);
 function keyDownHandler(e){
     switch(e.key){
         case "ArrowRight":
-            if(canMoveRight){
-                playerState = 1;
-                playerCurrentSpeed = playerMaxSpeed;
-            }
+            movementRight = true;
             break;
         case "ArrowLeft":
-            if(canMoveLeft){
-                playerState = 1;
-                playerCurrentSpeed = -playerMaxSpeed;
-            }
+            movementLeft = true;
             break;
         case "ArrowUp":
             playerState = 2;
@@ -164,32 +122,33 @@ function keyDownHandler(e){
     console.log(e.key)
 }
 
+let movementRight = false;
+let movementLeft = false;
+
 function mainGameLoop(){
-    //player can`t escape from window
-    if(playerX <= 0){
-        canMoveLeft = false
-        playerState = 0;
+    if(movementRight){
+        playerObject.setSpeed(10);
+        playerObject.setState(1);
     }else{
-        canMoveLeft = true
+        playerObject.setSpeed(0);
+        playerObject.setState(0);
     }
 
-    if(playerX >= width-58){
-        canMoveRight = false
-        playerState = 0
-    }else{
-        canMoveRight = true
+    if(movementLeft&&!movementRight){
+        playerObject.setSpeed(-10);
+        playerObject.setState(1);
     }
+    bombObject.update();
+    playerObject.update();
 }
 
 function keyUpHandler(e){
     switch(e.key){
         case "ArrowRight":
-            playerState = 0;
-            playerCurrentSpeed = 0;
+            movementRight = false;
             break;
         case "ArrowLeft":
-            playerState = 0;
-            playerCurrentSpeed = 0;
+            movementLeft = false;
             break;
         case "ArrowUp":
             playerState = 0;
@@ -203,7 +162,7 @@ function sleep(ms) {
 }
 
 window.addEventListener("graphics_loaded", () => {
-    setInterval(animationHandler, 50)
+    setInterval(animationHandler, 60)
 })
 
 window.addEventListener("graphics_loaded", () => {
