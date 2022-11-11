@@ -77,7 +77,17 @@ const loadGraphics = function(){
             let imageToBase64Converter = new FileReader();
             imageToBase64Converter.addEventListener("load", () => {
                 graphics.bomb.bomb_on.push(imageToBase64Converter.result);
-                if(graphics.bomb.bomb_on.length==graphics.bomb.bombOnAnimationSize){
+            });
+            imageToBase64Converter.readAsDataURL(imageBlob);
+        })
+    }
+
+    for(let i = 1; i<=graphics.bomb.explosionAnimationSize; i+=1){
+        fetch(`resources/Sprites/bomb/explosion/${i}.png`).then(image => image.blob()).then(imageBlob => {
+            let imageToBase64Converter = new FileReader();
+            imageToBase64Converter.addEventListener("load", () => {
+                graphics.bomb.explosion.push(imageToBase64Converter.result);
+                if(graphics.bomb.explosion.length==graphics.bomb.explosionAnimationSize){
                     window.dispatchEvent(new Event("graphics_loaded"));
                 }
             });
@@ -92,14 +102,18 @@ window.addEventListener("load", loadGraphics);
 //update display
 async function render(){
     await mainGameCanvas2dContext.clearRect(0,0,width,height);
+    for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
+        bombObjects[bombCounter].render();
+    }
     playerObject.render();
-    bombObject.render();
 }
 
 let scrollBackground = false;
 
 async function animationHandler(){
-    bombObject.animate();
+    for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
+        bombObjects[bombCounter].animate();
+    }
     playerObject.animate();
     render();
 }
@@ -138,8 +152,11 @@ function mainGameLoop(){
         playerObject.setSpeed(-10);
         playerObject.setState(1);
     }
-    bombObject.update();
+    for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
+        bombObjects[bombCounter].update();
+    }
     playerObject.update();
+    clearBombObjectsArray();
 }
 
 function keyUpHandler(e){
@@ -153,6 +170,10 @@ function keyUpHandler(e){
         case "ArrowUp":
             playerState = 0;
             break;
+        case " ":
+            playerObject.dropBomb();
+            console.log(bombObjects)
+            break;
     }
 }
 
@@ -162,9 +183,9 @@ function sleep(ms) {
 }
 
 window.addEventListener("graphics_loaded", () => {
-    setInterval(animationHandler, 60)
+    setInterval(animationHandler, 60);
 })
 
 window.addEventListener("graphics_loaded", () => {
-    setInterval(mainGameLoop, 60)
+    setInterval(mainGameLoop, 60);
 })

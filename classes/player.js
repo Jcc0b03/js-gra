@@ -6,8 +6,8 @@ class Player{
     }
 
     playerAnimationFrame = 0
-    playerX = 0;
-    playerY = height-58;
+    X = 0;
+    Y = height-58;
 
     playerCurrentSpeed = 0;
     jumpHeight = 20;
@@ -57,15 +57,14 @@ class Player{
             }
         }
         this.animationFrame += 1
-        console.log(this.playerSprite.src);
     }
 
     async render(){
-        await mainGameCanvas2dContext.drawImage(this.playerSprite, this.playerX, this.playerY)
+        await mainGameCanvas2dContext.drawImage(this.playerSprite, this.X, this.Y)
     }
 
     update(){
-        this.playerX += this.playerCurrentSpeed
+        this.X += this.playerCurrentSpeed
     }
 
     setSpeed(speed){
@@ -74,6 +73,11 @@ class Player{
 
     setState(state){
         this.playerState = state 
+    }
+
+    dropBomb(){
+        let bomb = new Bomb(1000, 100, 25, this.X, this.Y-30);
+        bombObjects.push(bomb);
     }
 }
 
