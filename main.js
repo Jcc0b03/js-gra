@@ -10,98 +10,12 @@ mainGameCanvas.height = height;
 console.log(mainGameCanvas.width, mainGameCanvas.height);
 const mainGameCanvas2dContext = mainGameCanvas.getContext('2d');
 
-//loading resources
-const graphics = {
-    player: {
-        idleAnimationSize: 26, 
-        idle: [],
-        walkAnimationSize: 14,
-        walkRight: [],
-        walkLeft: [],
-        jumpAnimationSize: 4,
-        jump: [],
-    },
-    bomb: {
-        bomb_off: "",
-        bombOnAnimationSize: 10,
-        bomb_on: [],
-        explosionAnimationSize: 9,
-        explosion: [] 
-    }
-}
-
-const loadGraphics = function(){
-    console.log("loading graphics")
-    for(let i = 1; i<=graphics.player.idleAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/idle/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.idle.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.player.walkAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/walkRight/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.walkRight.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.player.walkAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/walkLeft/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.walkLeft.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.player.jumpAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/jump/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.jump.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.bomb.bombOnAnimationSize; i+=1){
-        fetch(`resources/Sprites/bomb/on/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.bomb.bomb_on.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.bomb.explosionAnimationSize; i+=1){
-        fetch(`resources/Sprites/bomb/explosion/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.bomb.explosion.push(imageToBase64Converter.result);
-                if(graphics.bomb.explosion.length==graphics.bomb.explosionAnimationSize){
-                    window.dispatchEvent(new Event("graphics_loaded"));
-                }
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-    console.log(graphics)
-}
-
-window.addEventListener("load", loadGraphics);
-
 //update display
 async function render(){
     await mainGameCanvas2dContext.clearRect(0,0,width,height);
+    for(let enemyCounter = 0; enemyCounter < enemiesObjects.length; enemyCounter++){
+        enemiesObjects[enemyCounter].render();
+    }
     for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
         bombObjects[bombCounter].render();
     }
@@ -111,6 +25,9 @@ async function render(){
 let scrollBackground = false;
 
 async function animationHandler(){
+    for(let enemyCounter = 0; enemyCounter < enemiesObjects.length; enemyCounter++){
+        enemiesObjects[enemyCounter].animate();
+    }
     for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
         bombObjects[bombCounter].animate();
     }
@@ -136,6 +53,7 @@ function keyDownHandler(e){
     console.log(e.key)
 }
 
+//keyboard handler
 let movementRight = false;
 let movementLeft = false;
 
