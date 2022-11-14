@@ -7,7 +7,7 @@ class Bomb{
         this.Y = bomb_y
     }
 
-    bombState = 0;
+    bombState = 0 // 0 - bomb before explosion; 1 - explosion; -1 - special state when the bomb is exploded
     bombImage = new Image();
     bombAnimationFrame = 0;
     bomb_speed = 10;
@@ -58,15 +58,24 @@ class Bomb{
         }
     }
 
-    boom = function(){
+    boom(){
         this.exploded = true;
         this.bombState = -1;
         this.bombImage = null;
+        //maybe some sound
+        this.giveDamage();
+    }
+
+    //todo - give enemies in bomb range damage
+    giveDamage(){
+
     }
 }
 
+//array that contains all active bombs
 let bombObjects = [];
 
+//bombs array is cleaned when the bomb explodes
 function clearBombObjectsArray(){
     for(let bombCounter=0; bombCounter<bombObjects.length; bombCounter++){
         if(bombObjects[bombCounter].exploded==true){

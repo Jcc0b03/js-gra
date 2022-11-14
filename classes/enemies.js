@@ -1,11 +1,15 @@
 class enemy{
     constructor(type, x, y){
         this.type = type //type 0 - cucumber; type 1 - capitan; type 2 - bigGuy
-        this.x = x
-        this.y = y
+        //spawn position
+        this.X = x
+        this.Y = y
     }
 
-    enemyState = 2
+    distanceFromPlayer = 0
+    
+    //graphics 
+    enemyState = 2 //animation state 0 - idle; 1 - walk; 3 - attack
     enemySprite = new Image()
 
     animationFrame = 0
@@ -93,7 +97,17 @@ class enemy{
     }
 
     async render(){
-        await mainGameCanvas2dContext.drawImage(this.enemySprite, this.x, this.y)
+        await mainGameCanvas2dContext.drawImage(this.enemySprite, this.X, this.Y)
+    }
+
+    update(){
+       this.distanceFromPlayer = this.calculateDistanceFromPlayer();
+       //debuging
+       console.log(this.distanceFromPlayer);
+    }
+
+    calculateDistanceFromPlayer(){
+        return Math.round(Math.sqrt(Math.pow(this.X-playerObject.X, 2)+Math.pow(this.Y - playerObject.Y, 2)));
     }
 }
 

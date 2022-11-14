@@ -5,10 +5,11 @@ class Player{
         this.jumpHeight = jumpHeight
     }
 
-    playerAnimationFrame = 0
+    //starting position
     X = 0;
     Y = height-58;
 
+    //movement variables
     playerCurrentSpeed = 0;
     jumpHeight = 20;
 
@@ -20,9 +21,11 @@ class Player{
     isGrounded = true;
     jumpStartedFlag = false;
 
+    //graphics
     playerSprite = new Image();
-    playerState = 0;
+    playerState = 0 //0 - idle; 1 - walk;
     animationFrame = 0;
+    playerAnimationFrame = 0
 
     async animate(){
         if(this.isGrounded){
@@ -37,6 +40,7 @@ class Player{
                     if(this.animationFrame > graphics.player.walkAnimationSize-1){
                         this.animationFrame = 0
                     }
+                    //when moving left or right diffrent animation
                     if(this.playerCurrentSpeed>0){
                         this.playerSprite.src = graphics.player.walkRight[this.animationFrame];
                     }else{

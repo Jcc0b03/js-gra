@@ -73,6 +73,10 @@ function mainGameLoop(){
     for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
         bombObjects[bombCounter].update();
     }
+
+    for(let enemyCounter = 0; enemyCounter < enemiesObjects.length; enemyCounter++){
+        enemiesObjects[enemyCounter].update();
+    }
     playerObject.update();
     clearBombObjectsArray();
 }
