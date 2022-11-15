@@ -1,6 +1,10 @@
-skakanie
-fizyka - grawitacja, kolizje
+co trzeba zrobić po zmergowaniu:
+    przerób klasę Beam tak żeby wyświetlała się tekstura
+    edytuj animacje skakania i chodzenia w różne strony - w klasie Player masz do dyspozycji this.isJumping
+
+// skakanie
+// fizyka - grawitacja, kolizje
 bomba(logika wybuchu, odejmowanie życia przeciwnikom)
 przeciwnicy
-platformy
+/ platformy
 interfejs

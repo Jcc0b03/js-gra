@@ -103,7 +103,7 @@ class enemy{
     update(){
        this.distanceFromPlayer = this.calculateDistanceFromPlayer();
        //debuging
-       console.log(this.distanceFromPlayer);
+    //    console.log(this.distanceFromPlayer);
     }
 
     calculateDistanceFromPlayer(){

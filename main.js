@@ -6,6 +6,8 @@ let width = window.innerWidth * scale;
 let height = window.innerHeight * scale;
 mainGameCanvas.width = width;
 mainGameCanvas.height = height; 
+let timing = Math.round(1000/60)
+// let timing = 300 // for debbugging
 
 console.log(mainGameCanvas.width, mainGameCanvas.height);
 const mainGameCanvas2dContext = mainGameCanvas.getContext('2d');
@@ -35,8 +37,8 @@ async function animationHandler(){
     render();
 }
 
-window.addEventListener("keydown", keyDownHandler);
-window.addEventListener("keyup", keyUpHandler);
+// window.addEventListener("keydown", keyDownHandler);
+// window.addEventListener("keyup", keyUpHandler);
 
 function keyDownHandler(e){
     switch(e.key){
@@ -57,19 +59,29 @@ function keyDownHandler(e){
 let movementRight = false;
 let movementLeft = false;
 
-function mainGameLoop(){
-    if(movementRight){
-        playerObject.setSpeed(10);
-        playerObject.setState(1);
-    }else{
-        playerObject.setSpeed(0);
-        playerObject.setState(0);
-    }
+// game elements init
+let obstacles = [
+    new Beam(0, 210, 700, 30),
+]
 
-    if(movementLeft&&!movementRight){
-        playerObject.setSpeed(-10);
-        playerObject.setState(1);
-    }
+let controll = new Controll(playerObject)
+
+function mainGameLoop(){
+    // if(movementRight){
+    //     playerObject.setSpeed(10);
+    //     playerObject.setState(1);
+    // }else{
+    //     playerObject.setSpeed(0);
+    //     playerObject.setState(0);
+    // }
+
+    // if(movementLeft&&!movementRight){
+    //     playerObject.setSpeed(-10);
+    //     playerObject.setState(1);
+    // }
+
+
+
     for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
         bombObjects[bombCounter].update();
     }
@@ -77,27 +89,28 @@ function mainGameLoop(){
     for(let enemyCounter = 0; enemyCounter < enemiesObjects.length; enemyCounter++){
         enemiesObjects[enemyCounter].update();
     }
-    playerObject.update();
+    controll.tick()
+    playerObject.update(obstacles);
     clearBombObjectsArray();
 }
 
-function keyUpHandler(e){
-    switch(e.key){
-        case "ArrowRight":
-            movementRight = false;
-            break;
-        case "ArrowLeft":
-            movementLeft = false;
-            break;
-        case "ArrowUp":
-            playerState = 0;
-            break;
-        case " ":
-            playerObject.dropBomb();
-            console.log(bombObjects)
-            break;
-    }
-}
+// function keyUpHandler(e){
+//     switch(e.key){
+//         case "ArrowRight":
+//             movementRight = false;
+//             break;
+//         case "ArrowLeft":
+//             movementLeft = false;
+//             break;
+//         case "ArrowUp":
+//             playerState = 0;
+//             break;
+//         case " ":
+//             playerObject.dropBomb();
+//             console.log(bombObjects)
+//             break;
+//     }
+// }
 
 //utils
 function sleep(ms) {
@@ -109,5 +122,5 @@ window.addEventListener("graphics_loaded", () => {
 })
 
 window.addEventListener("graphics_loaded", () => {
-    setInterval(mainGameLoop, 60);
+    setInterval(mainGameLoop, timing);
 })
