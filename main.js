@@ -21,6 +21,9 @@ async function render(){
     for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
         bombObjects[bombCounter].render();
     }
+    obstacles.forEach(obstacle => {
+        obstacle.render()
+    });
     playerObject.render();
 }
 
@@ -33,6 +36,7 @@ async function animationHandler(){
     for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
         bombObjects[bombCounter].animate();
     }
+
     playerObject.animate();
     render();
 }
@@ -60,11 +64,16 @@ let movementRight = false;
 let movementLeft = false;
 
 // game elements init
-let obstacles = [
-    new Beam(0, 210, 700, 30),
-]
+let obstacles
+let controll
 
-let controll = new Controll(playerObject, timing)
+function initialization(){
+    obstacles = [
+        new Beam(36, 210, 4),
+        new Beam(36 * 7, 210, 4),
+    ]
+    controll = new Controll(playerObject, timing)
+}
 
 function mainGameLoop(){
     for(let bombCounter = 0; bombCounter < bombObjects.length; bombCounter++){
@@ -78,6 +87,10 @@ function mainGameLoop(){
     playerObject.update(obstacles);
     clearBombObjectsArray();
 }
+
+window.addEventListener("graphics_loaded", () => {
+    initialization();
+})
 
 window.addEventListener("graphics_loaded", () => {
     setInterval(animationHandler, 60);

@@ -9,7 +9,7 @@ class enemy{
     distanceFromPlayer = 0
     
     //graphics 
-    enemyState = 2 //animation state 0 - idle; 1 - walk; 3 - attack
+    enemyState = 1 //animation state 0 - idle; 1 - walk; 3 - attack
     enemySprite = new Image()
 
     animationFrame = 0
@@ -113,9 +113,8 @@ class enemy{
 
 let enemiesObjects = [];
 
-let enemyCucumber = new enemy(0, 120, 120);
-let enemyCapitan = new enemy(1, 200, 120);
-let enemyBigGuy = new enemy(2, 280, 120);
+let enemyCucumber = new enemy(0, 300, 0);
+let enemyCapitan = new enemy(1, 390, 0);
+let enemyBigGuy = new enemy(2, 480, 0);
 
 enemiesObjects.push(enemyCucumber, enemyCapitan, enemyBigGuy);
-console.log(enemiesObjects);

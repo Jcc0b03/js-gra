@@ -2,7 +2,7 @@
 
 
 class Player{
-    constructor(x, y, health, maxSpeed=4, jumpHeight=15){
+    constructor(x, y, health, maxSpeed=3, jumpHeight=12){
         this.health = health
         this.maxSpeed = maxSpeed
         this.jumpHeight = jumpHeight
@@ -12,7 +12,7 @@ class Player{
         this.acc = 0.1
         this.dec = 0.2
         this.jump_dec = 0.02
-        this.gravity = 0.7
+        this.gravity = 0.6
         this.prevCollX = false
         this.prevCollY = false
         
@@ -21,8 +21,8 @@ class Player{
         this.y_cord = y
 
         //hitbox size
-        this.width = 75
-        this.height = 75
+        this.width = 58
+        this.height = 58
 
         this.isJumping = false
         this.collide_bottom = false
@@ -175,7 +175,6 @@ class Player{
         }
     }
 
-    //TODO
     handle_explosions(){
         bombObjects.forEach(bomb=>{
             if (bomb.bombState == 1){

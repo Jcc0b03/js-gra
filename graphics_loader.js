@@ -46,6 +46,11 @@ const graphics = {
         walkLeft: [],
         attackAnimationSize: 11,
         attackRight: []
+    },
+
+    platform: {
+        idleAnimationSize: 1,
+        idle: []
     }
 
 }
@@ -210,6 +215,18 @@ const loadGraphics = function(){
             imageToBase64Converter.readAsDataURL(imageBlob);
         })
     }
+
+    // platform
+    for(let i = 1; i<=graphics.platform.idleAnimationSize; i+=1){
+        fetch(`resources/Background/platform${i}.png`).then(image => image.blob()).then(imageBlob => {
+            let imageToBase64Converter = new FileReader();
+            imageToBase64Converter.addEventListener("load", () => {
+                graphics.platform.idle.push(imageToBase64Converter.result);
+            });
+            imageToBase64Converter.readAsDataURL(imageBlob);
+        })
+    }
+
     console.log(graphics)
 }
 

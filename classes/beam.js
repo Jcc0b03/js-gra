@@ -1,13 +1,15 @@
 class Beam {
-    constructor(x, y, width, height, gravity=false) {
+    constructor(x, y, size, gravity=false) {
         this.x_cord = x
         this.y_cord = y
-        this.width = width
-        this.height = height
+        this.size = size
+        this.width = size * 36
+        this.height = 36
         this.gravity = gravity
         if (gravity){
             console.error("Not implemented")
         }
+        this.image = new Image()
 
     }
     updatePos(){
@@ -21,7 +23,11 @@ class Beam {
     }
 
     // wierzchowski sra trzy razy dziennie
-    rednder(){
-        //TO DO
+    async render(){
+        this.image.src = graphics.platform.idle[0]
+        for (let i=0; i < this.size; i++){
+            await mainGameCanvas2dContext.drawImage(this.image, this.x_cord + i * 36, this.y_cord)
+        }
+        // await mainGameCanvas2dContext.drawImage(this.image, 0, 0)
     }
 }

@@ -30,7 +30,7 @@ class Controll {
     }
 
     addEL(){
-        console.log("added el")
+        console.log("added control listeners")
         this.body.addEventListener("keydown", (e) => {
             // if (e.key == this.keyUp){
             //     this.isKeyUp = true
@@ -94,7 +94,6 @@ class Controll {
         if (this.isBomb){
             this.bombHoldFrames += 1
         }
-        console.log(this.bombHoldFrames * this.ft * 2, !this.isBomb)
         if ((this.bombHoldFrames > 10 && !this.isBomb) ||
             (this.bombHoldFrames * this.ft * 2 > this.maxBombDelay * 1000 * 2)){
             this.player.dropBomb(this.bombHoldFrames * this.ft * 2 * 2)
