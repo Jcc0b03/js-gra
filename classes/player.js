@@ -1,14 +1,4 @@
 // function that checks collisions
-function collide(firstObject, secondObject){
-    let fBottomRight = [firstObject.x_cord + firstObject.width, firstObject.y_cord + firstObject.height]
-    let sBottomRight = [secondObject.x_cord + secondObject.width, secondObject.y_cord + secondObject.height]
-    
-    let fx = firstObject.x_cord > secondObject.x_cord && firstObject.x_cord < sBottomRight[0]
-    let fy = firstObject.y_cord > secondObject.y_cord && firstObject.y_cord < sBottomRight[1]
-    let sx = secondObject.x_cord > firstObject.x_cord && secondObject.x_cord < fBottomRight[0]
-    let sy = secondObject.y_cord > firstObject.y_cord && secondObject.y_cord < fBottomRight[1]
-    return [(fx || sx) , (fy || sy)]
-}
 
 
 class Player{
@@ -73,13 +63,13 @@ class Player{
                     if(this.animationFrame > graphics.player.walkAnimationSize-1){
                         this.animationFrame = 0
                     }
-                    //when moving left or right diffrent animation
-                    if(this.playerCurrentSpeed>0){
-                        this.playerSprite.src = graphics.player.walkRight[this.animationFrame];
-                    }else{
-                        this.playerSprite.src = graphics.player.walkLeft[this.animationFrame];
-                    }
+                    this.playerSprite.src = graphics.player.walkLeft[this.animationFrame];
                     break;
+                case 2:
+                    if(this.animationFrame > graphics.player.walkAnimationSize-1){
+                        this.animationFrame = 0
+                    }
+                    this.playerSprite.src = graphics.player.walkRight[this.animationFrame]
             }
         }else{
             if(!this.jumpStartedFlag){
@@ -112,8 +102,8 @@ class Player{
         this.playerState = state 
     }
 
-    dropBomb(){
-        let bomb = new Bomb(1000, 100, 25, this.x_cord, this.y_cord-30);
+    dropBomb(timeToBoom=1000){
+        let bomb = new Bomb(timeToBoom, 100, 25, this.x_cord, this.y_cord-30);
         bombObjects.push(bomb);
     }
 
@@ -182,6 +172,24 @@ class Player{
         } else if (this.speedY < 0) {
             this.speedY += this.dec
         }
+    }
+
+    //TODO
+    handle_explosions(){
+        bombObjects.forEach(bomb=>{
+            if (bomb.bombState == 1){
+                let x_len, y_len, dist
+                let fun = distance(bomb, this)
+                if (fun){
+                    [x_len, y_len, dist] = fun
+                    console.log(x_len, y_len, dist)
+                    if (dist < bomb.range) {
+                        this.speedX += (bomb.range - x_len) / (bomb.range * 3)
+                        this.speedY += (bomb.range - y_len) / (bomb.range * 3)
+                    }
+                }
+            }
+        })
     }
 
     update(obstacles){
@@ -259,8 +267,10 @@ class Player{
         
         this.prevCollX = cx
         this.prevCollY = cy
+
+        this.handle_explosions()
     }
       
 }
 
-let playerObject = new Player(100, 10, 20);
+let playerObject = new Player(100, 10, 20);x=10

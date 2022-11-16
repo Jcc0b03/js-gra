@@ -5,6 +5,8 @@ class Bomb{
         this.damage = damage;
         this.X = bomb_x
         this.Y = bomb_y
+        this.x_cord = bomb_x
+        this.y_cord = bomb_y
     }
 
     bombState = 0 // 0 - bomb before explosion; 1 - explosion; -1 - special state when the bomb is exploded
@@ -68,7 +70,7 @@ class Bomb{
 
     //todo - give enemies in bomb range damage
     giveDamage(){
-
+        // use distance() here
     }
 }
 
