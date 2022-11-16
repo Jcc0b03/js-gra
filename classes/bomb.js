@@ -72,6 +72,10 @@ class Bomb{
     giveDamage(){
         // use distance() here
     }
+
+    getCords(){
+        return {X: this.X, Y: this.Y}
+    }
 }
 
 //array that contains all active bombs

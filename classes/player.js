@@ -43,6 +43,7 @@ class Player{
 
     isGrounded = true;
     jumpStartedFlag = false;
+    jumpHeight = 15
 
     //graphics
     playerSprite = new Image();
@@ -51,7 +52,7 @@ class Player{
     playerAnimationFrame = 0
 
     async animate(){
-        if(this.isGrounded){
+        if(!this.isJumping){
             switch(this.playerState){
                 case 0:
                     if(this.animationFrame > graphics.player.idleAnimationSize-1){
@@ -75,11 +76,11 @@ class Player{
             if(!this.jumpStartedFlag){
                 for(let jumpAnimationFrame=0;jumpAnimationFrame<graphics.player.jumpAnimationSize-1;jumpAnimationFrame++){
                     this.playerSprite.src = graphics.player.jump[jumpAnimationFrame];
-                    console.log(this.jumpAnimationFrame)
+                    console.log(this.jumpAnimationFrame);
                     await sleep(60);
                 }
                 this.jumpStartedFlag=true;
-            }else{
+            }else if(this.jumpStartedFlag){
                 this.playerSprite.src = graphics.player.jump[2];
             }
         }
@@ -145,7 +146,7 @@ class Player{
     jump(){
         console.log(this.isJumping)
         if (!this.isJumping && this.collide_bottom) {
-            this.speedY -= 15
+            this.speedY -= this.jumpHeight
             this.isJumping = true
         } 
     }
@@ -184,8 +185,18 @@ class Player{
                     [x_len, y_len, dist] = fun
                     console.log(x_len, y_len, dist)
                     if (dist < bomb.range) {
-                        this.speedX += (bomb.range - x_len) / (bomb.range * 3)
-                        this.speedY += (bomb.range - y_len) / (bomb.range * 3)
+                        //if player is on the right side of the bomb
+                        if(this.x_cord > bomb.X){
+                            this.speedX += (bomb.range - x_len) / (bomb.range * 3)
+                            //this.speedY += (bomb.range - y_len) / (bomb.range * 3)
+                            this.jump()
+                        //if player is on the left side of the bomb
+                        }else if(this.x_cord < bomb.X){
+                            this.speedX -= (bomb.range + x_len) / (bomb.range * 3)
+                            //this.speedY += (bomb.range + y_len) / (bomb.range * 3)
+                        }else if(this.x_cord == bomb.X){
+                            this.jump()
+                        }
                     }
                 }
             }
