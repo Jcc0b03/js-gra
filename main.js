@@ -66,12 +66,21 @@ let movementLeft = false;
 // game elements init
 let obstacles
 let controll
+let enemiesObjects
 
 function initialization(){
     obstacles = [
-        new Beam(36, 210, 4),
-        new Beam(36 * 7, 210, 4),
+        new Beam(36, 310, 4),
+        new Beam(36 * 7, 310, 4),
+        new Beam(36 * 11, 160, 6),
     ]
+
+    enemiesObjects = [
+        new enemy(0, 300, 0),
+        new enemy(1, 390, 0),
+        new enemy(2, 480, 0),
+    ];
+
     controll = new Controll(playerObject, timing)
 }
 
@@ -82,6 +91,7 @@ function mainGameLoop(){
 
     for(let enemyCounter = 0; enemyCounter < enemiesObjects.length; enemyCounter++){
         enemiesObjects[enemyCounter].update();
+        enemiesObjects[enemyCounter].updatePos(obstacles);
     }
     controll.tick()
     playerObject.update(obstacles);

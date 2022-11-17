@@ -65,6 +65,7 @@ class Bomb{
         this.bombState = -1;
         this.bombImage = null;
         //maybe some sound
+        this.recoilPlayer();
         this.giveDamage();
     }
 
@@ -73,8 +74,9 @@ class Bomb{
         // use distance() here
     }
 
-    getCords(){
-        return {X: this.X, Y: this.Y}
+    recoilPlayer(){
+        console.error("TODO")
+        playerObject
     }
 }
 

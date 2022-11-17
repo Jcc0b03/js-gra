@@ -1,15 +1,38 @@
 class enemy{
     constructor(type, x, y){
         this.type = type //type 0 - cucumber; type 1 - capitan; type 2 - bigGuy
+        // this.ai = AIControl(this)
+
         //spawn position
         this.X = x
         this.Y = y
+
+        //starting position
+        this.x_cord = x
+        this.y_cord = y
+
+        //hitbox size
+        this.width = 58
+        this.height = 58
+
+        this.health = 100
+        this.maxSpeed = 5
+        this.jumpHeight = 10
+
+        this.speedX = 1
+        this.speedY = -8
+        this.acc = 0.1
+        this.dec = 0.2
+        this.jump_dec = 0.02
+        this.gravity = 0.6
+        this.prevCollX = false
+        this.prevCollY = false
     }
 
     distanceFromPlayer = 0
     
     //graphics 
-    enemyState = 1 //animation state 0 - idle; 1 - walk; 3 - attack
+    enemyState = 0 //animation state 0 - idle; 1 - walk; 3 - attack
     enemySprite = new Image()
 
     animationFrame = 0
@@ -102,19 +125,161 @@ class enemy{
 
     update(){
        this.distanceFromPlayer = this.calculateDistanceFromPlayer();
-       //debuging
-    //    console.log(this.distanceFromPlayer);
+       
     }
 
     calculateDistanceFromPlayer(){
         return Math.round(Math.sqrt(Math.pow(this.X-playerObject.X, 2)+Math.pow(this.Y - playerObject.Y, 2)));
     }
+
+    //////////////////////////////////////
+
+    checkHor(cord) {
+        return true
+    }
+
+    checkVer(cord) {
+        return true
+    }
+
+    moveUp(){
+        if (this.speedY > -this.maxSpeed) {
+            this.speedY -= this.acc
+        }
+    }
+
+    moveDown(){
+        if (this.speedY < this.maxSpeed) {
+            this.speedY += this.acc
+        }
+    }
+
+    moveLeft(){
+        if (this.speedX > -this.maxSpeed) {
+            this.speedX -= this.acc
+        }
+    }
+
+    moveRight(){
+        console.log(this.speedX, this.maxSpeed)
+        if (this.speedX < this.maxSpeed) {
+            this.speedX += this.acc
+        }
+    }
+
+    jump(){
+        if (!this.isJumping && this.collide_bottom) {
+            this.speedY -= this.jumpHeight
+            this.isJumping = true
+        } 
+    }
+
+    decelerateX(){
+        if (Math.abs(this.speedX) < this.dec * 2) {
+            this.speedX = 0
+        }
+        if (this.speedX > 0) {
+            if (!this.collide_bottom){this.speedX -= this.jump_dec}
+            else {this.speedX -= this.dec}
+        } else if (this.speedX < 0) {
+            if (!this.collide_bottom){this.speedX += this.jump_dec}
+            else {this.speedX += this.dec}
+        }
+    }
+
+    decelerateY(){
+        if (Math.abs(this.speedY) < this.dec * 2) {
+            this.speedY = 0
+        }
+        if (this.speedY > 0) {
+            this.speedY -= this.dec
+        } else if (this.speedY < 0) {
+            this.speedY += this.dec
+        }
+    }
+
+    updatePos(obstacles){
+        this.speedY += this.gravity
+        console.log(this, this.speedY)
+
+        let newX = this.x_cord + this.speedX
+        let newY = this.y_cord + this.speedY
+        let cx, cy
+
+        let collision = false
+        let coll_obstacles = []
+        obstacles.forEach(obstacle => {
+            let coll = collide({
+                "x_cord": newX, "y_cord": newY,
+                "width": this.width, "height": this.height
+            }, obstacle)
+            cx = coll[0]
+            cy = coll[1]
+            if (cx && cy){
+                coll_obstacles.push(obstacle)
+                collision = true
+            }
+        })
+
+        if (this.checkHor(newX) && !collision){
+            this.x_cord = newX
+        } 
+        else if (this.prevCollX && cx && !this.prevCollY && cy){
+            this.x_cord = this.x_cord - this.speedX
+            // this.speedX = 0
+        }
+
+        if (this.checkVer(newY) && !collision){
+            this.y_cord = newY
+        } 
+        else if (this.prevCollY && cy && !this.prevCollX && cx){
+            this.y_cord = this.y_cord - this.speedY
+            // this.speedY = 0
+        }
+
+        let coll_top = false
+        let coll_bottom = false
+        let coll_left = false
+        let coll_right = false
+        coll_obstacles.forEach(obstacle => {
+            if (this.y_cord > obstacle.y_cord + obstacle.height){
+                coll_top = true
+            }
+            if (this.y_cord + this.height < obstacle.y_cord){
+                coll_bottom = true
+                this.collide_bottom = true
+            } else {this.collide_bottom = false}
+            if (this.x_cord > obstacle.x_cord + obstacle.width){
+                coll_left = true
+            }
+            if (this.x_cord + this.width < obstacle.x_cord){
+                coll_right = true
+            }
+        })
+
+        if (!coll_top && !coll_bottom) {
+            this.y_cord = newY
+        } else {
+            this.speedY = 0
+        }
+        if (!coll_left && !coll_right) {
+            this.x_cord = newX
+        } else {
+            this.speedX = 0
+        }
+
+        if(this.isJumping && coll_bottom){
+            this.isJumping = false
+        }
+
+        // this.ai.tick()
+
+        this.X = this.x_cord
+        this.Y = this.y_cord
+        
+        this.prevCollX = cx
+        this.prevCollY = cy
+
+        // this.handle_explosions()
+    }
 }
-
-let enemiesObjects = [];
-
-let enemyCucumber = new enemy(0, 300, 0);
-let enemyCapitan = new enemy(1, 390, 0);
-let enemyBigGuy = new enemy(2, 480, 0);
-
-enemiesObjects.push(enemyCucumber, enemyCapitan, enemyBigGuy);

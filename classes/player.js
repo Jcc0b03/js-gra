@@ -43,7 +43,7 @@ class Player{
 
     isGrounded = true;
     jumpStartedFlag = false;
-    jumpHeight = 15
+    jumpHeight = 15;
 
     //graphics
     playerSprite = new Image();
@@ -73,15 +73,28 @@ class Player{
                     this.playerSprite.src = graphics.player.walkRight[this.animationFrame]
             }
         }else{
-            if(!this.jumpStartedFlag){
-                for(let jumpAnimationFrame=0;jumpAnimationFrame<graphics.player.jumpAnimationSize-1;jumpAnimationFrame++){
-                    this.playerSprite.src = graphics.player.jump[jumpAnimationFrame];
-                    console.log(this.jumpAnimationFrame);
-                    await sleep(60);
+            if(this.speedX >= 0){
+                if(!this.jumpStartedFlag){
+                    for(let jumpAnimationFrame=0;jumpAnimationFrame<graphics.player.jumpAnimationSize-1;jumpAnimationFrame++){
+                        this.playerSprite.src = graphics.player.jumpRight[jumpAnimationFrame];
+                        console.log(this.jumpAnimationFrame);
+                        await sleep(60);
+                    }
+                    this.jumpStartedFlag=true;
+                }else if(this.jumpStartedFlag){
+                    this.playerSprite.src = graphics.player.jumpRight[2];
                 }
-                this.jumpStartedFlag=true;
-            }else if(this.jumpStartedFlag){
-                this.playerSprite.src = graphics.player.jump[2];
+            }else if(this.speedX < 0){
+                if(!this.jumpStartedFlag){
+                    for(let jumpAnimationFrame=0;jumpAnimationFrame<graphics.player.jumpAnimationSize-1;jumpAnimationFrame++){
+                        this.playerSprite.src = graphics.player.jumpLeft[jumpAnimationFrame];
+                        console.log(this.jumpAnimationFrame);
+                        await sleep(60);
+                    }
+                    this.jumpStartedFlag=true;
+                }else if(this.jumpStartedFlag){
+                    this.playerSprite.src = graphics.player.jumpLeft[2];
+                }
             }
         }
         this.animationFrame += 1
@@ -156,10 +169,10 @@ class Player{
             this.speedX = 0
         }
         if (this.speedX > 0) {
-            if (this.isJumping){this.speedX -= this.jump_dec}
+            if (!this.collide_bottom){this.speedX -= this.jump_dec}
             else {this.speedX -= this.dec}
         } else if (this.speedX < 0) {
-            if (this.isJumping){this.speedX += this.jump_dec}
+            if (!this.collide_bottom){this.speedX += this.jump_dec}
             else {this.speedX += this.dec}
         }
     }
@@ -174,7 +187,7 @@ class Player{
             this.speedY += this.dec
         }
     }
-
+    /*
     handle_explosions(){
         bombObjects.forEach(bomb=>{
             if (bomb.bombState == 1){
@@ -191,7 +204,9 @@ class Player{
                             this.jump()
                         //if player is on the left side of the bomb
                         }else if(this.x_cord < bomb.X){
-                            this.speedX -= (bomb.range + x_len) / (bomb.range * 3)
+                            this.speedX += (x_len - bomb.range) / (bomb.range * 3)
+                            console.error((x_len - bomb.range) / (bomb.range * 3))
+                            this.speedY -= 0.;
                             //this.speedY += (bomb.range + y_len) / (bomb.range * 3)
                         }else if(this.x_cord == bomb.X){
                             this.jump()
@@ -200,7 +215,7 @@ class Player{
                 }
             }
         })
-    }
+    }*/
 
     update(obstacles){
         this.speedY += this.gravity
@@ -278,7 +293,7 @@ class Player{
         this.prevCollX = cx
         this.prevCollY = cy
 
-        this.handle_explosions()
+        // this.handle_explosions()
     }
       
 }

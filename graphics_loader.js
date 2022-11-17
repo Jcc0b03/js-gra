@@ -7,7 +7,8 @@ const graphics = {
         walkRight: [],
         walkLeft: [],
         jumpAnimationSize: 4,
-        jump: [],
+        jumpRight: [],
+        jumpLeft: [],
     },
 
     bomb: {
@@ -89,10 +90,20 @@ const loadGraphics = function(){
     }
 
     for(let i = 1; i<=graphics.player.jumpAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/jump/${i}.png`).then(image => image.blob()).then(imageBlob => {
+        fetch(`resources/Sprites/player/jumpRight/${i}.png`).then(image => image.blob()).then(imageBlob => {
             let imageToBase64Converter = new FileReader();
             imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.jump.push(imageToBase64Converter.result);
+                graphics.player.jumpRight.push(imageToBase64Converter.result);
+            });
+            imageToBase64Converter.readAsDataURL(imageBlob);
+        })
+    }
+
+    for(let i = 1; i<=graphics.player.jumpAnimationSize; i+=1){
+        fetch(`resources/Sprites/player/jumpLeft/${i}.png`).then(image => image.blob()).then(imageBlob => {
+            let imageToBase64Converter = new FileReader();
+            imageToBase64Converter.addEventListener("load", () => {
+                graphics.player.jumpLeft.push(imageToBase64Converter.result);
             });
             imageToBase64Converter.readAsDataURL(imageBlob);
         })
