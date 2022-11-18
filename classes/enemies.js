@@ -11,15 +11,17 @@ class enemy{
         this.x_cord = x
         this.y_cord = y
 
-        //hitbox size
+        //hitboxesY size for diffrent type of enemies
+        this.hitboxesY = [69, 72, 75]
+
         this.width = 58
-        this.height = 58
+        this.height = this.hitboxesY[this.type]
 
         this.health = 100
         this.maxSpeed = 5
         this.jumpHeight = 10
 
-        this.speedX = 1
+        this.speedX = 0
         this.speedY = -8
         this.acc = 0.1
         this.dec = 0.2
@@ -200,7 +202,6 @@ class enemy{
 
     updatePos(obstacles){
         this.speedY += this.gravity
-        console.log(this, this.speedY)
 
         let newX = this.x_cord + this.speedX
         let newY = this.y_cord + this.speedY

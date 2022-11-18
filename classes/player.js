@@ -295,7 +295,14 @@ class Player{
 
         // this.handle_explosions()
     }
-      
+    
+    addSpeedX(value){
+        this.speedX += value;
+    }
+
+    addSpeedY(value){
+        this.speedY -= value;
+    }
 }
 
 let playerObject = new Player(100, 10, 20);x=10

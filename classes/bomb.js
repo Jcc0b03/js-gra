@@ -33,8 +33,10 @@ class Bomb{
                     this.bombAnimationFrame += 1;
 
                     if(this.bombAnimationFrame > graphics.bomb.explosionAnimationSize-1){
-                        this.boom();
+                        this.setExploded();
                     }
+
+                    this.boom();
                     break;
             }
         }
@@ -60,13 +62,19 @@ class Bomb{
         }
     }
 
-    boom(){
+    setExploded(){
         this.exploded = true;
         this.bombState = -1;
         this.bombImage = null;
-        //maybe some sound
-        this.recoilPlayer();
-        this.giveDamage();
+    }
+    
+    boomFlag = false;
+    boom(){
+        if(!this.boomFlag){
+            this.recoilPlayer();
+            this.giveDamage();
+            this.boomFlag = true;
+        }
     }
 
     //todo - give enemies in bomb range damage
@@ -75,8 +83,16 @@ class Bomb{
     }
 
     recoilPlayer(){
-        console.error("TODO")
-        playerObject
+        console.log(distance(this, playerObject));
+        if(distance(this, playerObject)[2] <= this.range){
+            if(playerObject.x_cord > this.x_cord+10){
+                playerObject.addSpeedX(7);
+                playerObject.addSpeedY(15);
+            }else if(playerObject.x_cord < this.x_cord-10){
+                playerObject.addSpeedX(-7);
+                playerObject.addSpeedY(15);
+            }
+        }
     }
 }
 
