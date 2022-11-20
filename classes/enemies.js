@@ -1,7 +1,7 @@
 class enemy{
-    constructor(type, x, y){
+    constructor(type, x, y, timing){
         this.type = type //type 0 - cucumber; type 1 - capitan; type 2 - bigGuy
-        // this.ai = AIControl(this)
+        this.ai = new AIControl(this, timing)
 
         //spawn position
         this.X = x
@@ -17,8 +17,17 @@ class enemy{
         this.width = 58
         this.height = this.hitboxesY[this.type]
 
+        this.hitbox = {
+            "x_cord": this.x_cord, 
+            "y_cord": this.y_cordt,
+            "width": this.width, 
+            "height": this.height
+        }
+
         this.health = 100
-        this.maxSpeed = 5
+        this.walk_speed = 1
+        this.run_speed = 4
+        this.maxSpeed = this.walk_speed
         this.jumpHeight = 10
 
         this.speedX = 0
@@ -163,7 +172,7 @@ class enemy{
     }
 
     moveRight(){
-        console.log(this.speedX, this.maxSpeed)
+        // console.log(this.speedX, this.maxSpeed)
         if (this.speedX < this.maxSpeed) {
             this.speedX += this.acc
         }
@@ -273,7 +282,7 @@ class enemy{
             this.isJumping = false
         }
 
-        // this.ai.tick()
+        this.ai.tick(obstacles)
 
         this.X = this.x_cord
         this.Y = this.y_cord

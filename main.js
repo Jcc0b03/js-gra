@@ -71,14 +71,14 @@ let enemiesObjects
 function initialization(){
     obstacles = [
         new Beam(36, 310, 4),
-        new Beam(36 * 7, 310, 4),
-        new Beam(36 * 11, 160, 6),
+        new Beam(36 * 7, 310, 6),
+        new Beam(36 * 11, 160, 10),
     ]
 
     enemiesObjects = [
-        new enemy(0, 300, 0),
-        new enemy(1, 390, 0),
-        new enemy(2, 480, 0),
+        // new enemy(0, 300, 0, timing),
+        new enemy(1, 390, 0, timing),
+        // new enemy(2, 480, 0, timing),
     ];
 
     controll = new Controll(playerObject, timing)

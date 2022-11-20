@@ -3,6 +3,28 @@ function sleep(ms) {
 }
 
 
+// returns random value within range(a, b)
+function randint(a, b){
+    b += 1
+    return Math.floor(Math.random() * (b - a) + a)
+}
+
+
+// returns true or false according given percentage
+function randbool(percent){
+    return randint(1, Math.round(100/percent)) == 1
+}
+
+
+// returns random element from a list
+function randelement(array){
+    if (array.length > 0){
+        return array[randint(0, array.length-1)]
+    }
+    return false
+}
+
+
 // function that checks collisions
 function collide(firstObject, secondObject){
     let fBottomRight = [firstObject.x_cord + firstObject.width, firstObject.y_cord + firstObject.height]
@@ -13,6 +35,12 @@ function collide(firstObject, secondObject){
     let sx = secondObject.x_cord > firstObject.x_cord && secondObject.x_cord < fBottomRight[0]
     let sy = secondObject.y_cord > firstObject.y_cord && secondObject.y_cord < fBottomRight[1]
     return [(fx || sx) , (fy || sy)]
+}
+
+
+function objCollide(firstObject, secondObject){
+    [x, y] = [...collide(firstObject, secondObject)]
+    return x && y
 }
 
 
