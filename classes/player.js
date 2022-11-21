@@ -303,6 +303,10 @@ class Player{
     addSpeedY(value){
         this.speedY -= value;
     }
+
+    stop(){
+        this.speedX = 0;
+    }
 }
 
 let playerObject = new Player(100, 10, 20);x=10

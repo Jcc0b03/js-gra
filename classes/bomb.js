@@ -44,7 +44,7 @@ class Bomb{
 
     async render(){
         if(!this.exploded){
-            await mainGameCanvas2dContext.drawImage(this.bombImage, this.X, this.Y);
+            await mainGameCanvas2dContext.drawImage(this.bombImage, this.x_cord, this.y_cord);
         }
     }
 
@@ -97,6 +97,10 @@ class Bomb{
                 playerObject.addSpeedY(15);
             }
         }
+    }
+
+    scroll(speed){
+        this.x_cord -= speed;
     }
 }
 

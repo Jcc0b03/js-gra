@@ -12,6 +12,9 @@ let timing = Math.round(1000/60)
 console.log(mainGameCanvas.width, mainGameCanvas.height);
 const mainGameCanvas2dContext = mainGameCanvas.getContext('2d');
 
+let scrollScreen = false;
+let scrollingSpeed = 0;
+
 //update display
 async function render(){
     await mainGameCanvas2dContext.clearRect(0,0,width,height);
@@ -96,6 +99,7 @@ function mainGameLoop(){
     controll.tick();
     playerObject.update(obstacles);
     clearBombObjectsArray();
+    applyScrollingSpeed();
 }
 
 window.addEventListener("graphics_loaded", () => {

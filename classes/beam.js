@@ -12,6 +12,7 @@ class Beam {
         this.image = new Image()
 
     }
+
     updatePos(){
         // this.speedY += this.gravity
 
@@ -29,5 +30,9 @@ class Beam {
             await mainGameCanvas2dContext.drawImage(this.image, this.x_cord + i * 36, this.y_cord)
         }
         // await mainGameCanvas2dContext.drawImage(this.image, 0, 0)
+    }
+
+    scroll(speed){
+        this.x_cord -= speed;
     }
 }

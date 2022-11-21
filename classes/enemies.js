@@ -300,6 +300,10 @@ class enemy{
         this.health -= damage;
         console.log(this.health);
     }
+
+    scroll(speed){
+        this.x_cord -= speed;
+    }
 }
 
 function clearEnemies(){

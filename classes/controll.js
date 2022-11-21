@@ -85,8 +85,15 @@ class Controll {
             this.player.setState(1)
         }
         if (this.isKeyRight){
-            this.player.moveRight()
+            if(playerObject.x_cord <= width/2){
+                this.player.moveRight()
+            }else{
+                this.player.stop();
+                accScrolling();
+            }
             this.player.setState(2)
+        }else{
+            decScrolling();
         }
         if (this.isJump) {
             this.player.jump()
@@ -110,4 +117,32 @@ class Controll {
             this.player.decelerateY()
         }
     }
+}
+
+function accScrolling(){
+    if(scrollingSpeed < playerObject.maxSpeed){
+        scrollingSpeed += playerObject.acc;
+    }
+}
+
+function decScrolling(){
+    if(scrollingSpeed > 0){
+        scrollingSpeed -= playerObject.dec;
+    }else if(scrollingSpeed < 0){
+        scrollingSpeed = 0;
+    }
+}
+
+function applyScrollingSpeed(){
+    enemiesObjects.forEach(enemy => {
+        enemy.scroll(scrollingSpeed);
+    });
+
+    obstacles.forEach(obstacle => {
+        obstacle.scroll(scrollingSpeed);
+    });
+
+    bombObjects.forEach(bomb => {
+         bomb.scroll(scrollingSpeed);
+    });
 }
