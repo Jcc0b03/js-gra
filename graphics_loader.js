@@ -56,163 +56,46 @@ const graphics = {
 
 }
 
+function loadGraphic(animationSize, graphicsArray, path){
+    for(let i = 1; i<=animationSize; i+=1){
+        fetch(`resources/Sprites/${path}/${i}.png`).then(image => image.blob()).then(imageBlob => {
+            let imageToBase64Converter = new FileReader();
+            imageToBase64Converter.addEventListener("load", () => {
+                graphicsArray.push(imageToBase64Converter.result);
+            });
+            imageToBase64Converter.readAsDataURL(imageBlob);
+        })
+    }
+}
+
 const loadGraphics = function(){
     console.log("loading graphics...")
+
     //loading player graphics
-    for(let i = 1; i<=graphics.player.idleAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/idle/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.idle.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.player.walkAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/walkRight/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.walkRight.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.player.walkAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/walkLeft/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.walkLeft.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.player.jumpAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/jumpRight/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.jumpRight.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.player.jumpAnimationSize; i+=1){
-        fetch(`resources/Sprites/player/jumpLeft/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.player.jumpLeft.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
+    loadGraphic(graphics.player.idleAnimationSize, graphics.player.idle, "player/idle")
+    loadGraphic(graphics.player.walkAnimationSize, graphics.player.walkRight, "player/walkRight")
+    loadGraphic(graphics.player.walkAnimationSize, graphics.player.walkLeft, "player/walkLeft")
+    loadGraphic(graphics.player.jumpAnimationSize, graphics.player.jumpRight, "player/jumpRight")
+    loadGraphic(graphics.player.jumpAnimationSize, graphics.player.jumpLeft, "player/jumpLeft")
 
     //loading bomb graphics
-    for(let i = 1; i<=graphics.bomb.bombOnAnimationSize; i+=1){
-        fetch(`resources/Sprites/bomb/on/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.bomb.bomb_on.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.bomb.explosionAnimationSize; i+=1){
-        fetch(`resources/Sprites/bomb/explosion/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.bomb.explosion.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
+    loadGraphic(graphics.bomb.bombOnAnimationSize, graphics.bomb.bomb_on, "bomb/on")
+    loadGraphic(graphics.bomb.explosionAnimationSize, graphics.bomb.explosion, "bomb/explosion")
+    
     //enemy cucumber
-    for(let i = 1; i<=graphics.enemyCucumber.idleAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyCucumber/idle/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyCucumber.idle.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.enemyCucumber.walkAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyCucumber/walkLeft/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyCucumber.walkLeft.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.enemyCucumber.attackAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyCucumber/attack/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyCucumber.attackLeft.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
+    loadGraphic(graphics.enemyCucumber.idleAnimationSize, graphics.enemyCucumber.idle, "enemyCucumber/idle")
+    loadGraphic(graphics.enemyCucumber.walkAnimationSize, graphics.enemyCucumber.walkLeft, "enemyCucumber/walkLeft")
+    loadGraphic(graphics.enemyCucumber.attackAnimationSize, graphics.enemyCucumber.attackLeft, "enemyCucumber/attack")
 
     //enemy capitan
-    for(let i = 1; i<=graphics.enemyCapitan.idleAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyCapitan/idle/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyCapitan.idle.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.enemyCapitan.walkAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyCapitan/walkRight/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyCapitan.walkRight.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.enemyCapitan.attackAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyCapitan/attack/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyCapitan.attackRight.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
+    loadGraphic(graphics.enemyCapitan.idleAnimationSize, graphics.enemyCapitan.idle, "enemyCapitan/idle")
+    loadGraphic(graphics.enemyCapitan.walkAnimationSize, graphics.enemyCapitan.walkRight, "enemyCapitan/walkRight")
+    loadGraphic(graphics.enemyCapitan.walkAnimationSize, graphics.enemyCapitan.walkLeft, "enemyCapitan/walkLeft")
+    loadGraphic(graphics.enemyCapitan.attackAnimationSize, graphics.enemyCapitan.attackRight, "enemyCapitan/attack")
 
     //enemy bigGuy
-    for(let i = 1; i<=graphics.enemyBigGuy.idleAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyBigGuy/idle/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyBigGuy.idle.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
-    for(let i = 1; i<=graphics.enemyBigGuy.walkAnimationSize; i+=1){
-        fetch(`resources/Sprites/enemyBigGuy/walkRight/${i}.png`).then(image => image.blob()).then(imageBlob => {
-            let imageToBase64Converter = new FileReader();
-            imageToBase64Converter.addEventListener("load", () => {
-                graphics.enemyBigGuy.walkRight.push(imageToBase64Converter.result);
-            });
-            imageToBase64Converter.readAsDataURL(imageBlob);
-        })
-    }
-
+    loadGraphic(graphics.enemyBigGuy.idleAnimationSize, graphics.enemyBigGuy.idle, "enemyBigGuy/idle")
+    loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkRight, "enemyBigGuy/walkRight")
     for(let i = 1; i<=graphics.enemyBigGuy.attackAnimationSize; i+=1){
         fetch(`resources/Sprites/enemyBigGuy/attack/${i}.png`).then(image => image.blob()).then(imageBlob => {
             let imageToBase64Converter = new FileReader();

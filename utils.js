@@ -50,3 +50,10 @@ function distance(firstObject, secondObject){
     let disct = Math.sqrt(x**2 + y**2)
     return [x, y, disct]
 }
+
+
+function draw_rect(x, y, width, height){
+    mainGameCanvas2dContext.beginPath();
+    mainGameCanvas2dContext.rect(x, y, width, height);
+    mainGameCanvas2dContext.stroke();
+}

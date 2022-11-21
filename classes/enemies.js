@@ -166,6 +166,7 @@ class enemy{
     }
 
     moveLeft(){
+        this.enemyState = 1
         if (this.speedX > -this.maxSpeed) {
             this.speedX -= this.acc
         }
@@ -173,6 +174,7 @@ class enemy{
 
     moveRight(){
         // console.log(this.speedX, this.maxSpeed)
+        this.enemyState = 1
         if (this.speedX < this.maxSpeed) {
             this.speedX += this.acc
         }
@@ -186,6 +188,7 @@ class enemy{
     }
 
     decelerateX(){
+        this.enemyState = 0
         if (Math.abs(this.speedX) < this.dec * 2) {
             this.speedX = 0
         }

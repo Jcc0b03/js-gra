@@ -76,9 +76,9 @@ function initialization(){
     ]
 
     enemiesObjects = [
-        // new enemy(0, 300, 0, timing),
+        new enemy(0, 300, 0, timing),
         new enemy(1, 390, 0, timing),
-        // new enemy(2, 480, 0, timing),
+        new enemy(2, 480, 0, timing),
     ];
 
     controll = new Controll(playerObject, timing)
