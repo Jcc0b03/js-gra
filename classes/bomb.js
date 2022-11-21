@@ -79,7 +79,11 @@ class Bomb{
 
     //todo - give enemies in bomb range damage
     giveDamage(){
-        // use distance() here
+        enemiesObjects.forEach((enemy, id) => {
+            if(distance(this, enemy)[2] <= this.range){
+                enemy.getDamage(this.damage);
+            }
+        })
     }
 
     recoilPlayer(){

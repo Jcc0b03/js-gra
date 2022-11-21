@@ -136,7 +136,7 @@ class enemy{
 
     update(){
        this.distanceFromPlayer = this.calculateDistanceFromPlayer();
-       
+       clearEnemies();
     }
 
     calculateDistanceFromPlayer(){
@@ -295,4 +295,17 @@ class enemy{
 
         // this.handle_explosions()
     }
+
+    getDamage(damage){
+        this.health -= damage;
+        console.log(this.health);
+    }
+}
+
+function clearEnemies(){
+    enemiesObjects.forEach((enemy, id)=>{
+        if(enemy.health <= 0){
+            enemiesObjects.splice(id, 1);
+        }
+    })
 }
