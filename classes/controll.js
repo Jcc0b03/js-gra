@@ -119,6 +119,8 @@ class Controll {
     }
 }
 
+
+//scrolling works only to right
 function accScrolling(){
     if(scrollingSpeed < playerObject.maxSpeed){
         scrollingSpeed += playerObject.acc;
