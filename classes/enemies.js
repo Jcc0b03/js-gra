@@ -44,88 +44,62 @@ class enemy{
     
     //graphics 
     enemyState = 0 //animation state 0 - idle; 1 - walk; 3 - attack
+    direction = 1  // where enemy is facing; 1 - right; -1 - left
     enemySprite = new Image()
 
     animationFrame = 0
     animate(){
+        let enemyArray
+        let walk
+        let attack
         switch(this.type){
             //enemyCucumber
             case 0:
-                switch(this.enemyState){
-                    case 0:
-                        if(this.animationFrame > graphics.enemyCucumber.idleAnimationSize - 1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyCucumber.idle[this.animationFrame]
-                        this.animationFrame+=1
-                        break;
-                    case 1:
-                        if(this.animationFrame > graphics.enemyCucumber.walkAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyCucumber.walkLeft[this.animationFrame];
-                        this.animationFrame += 1;
-                        break;
-                    case 2:
-                        if(this.animationFrame > graphics.enemyCucumber.attackAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyCucumber.attackLeft[this.animationFrame];
-                        this.animationFrame += 1;
-                        break;
-                }
+                enemyArray = graphics.enemyCucumber
                 break;
             //enemyCaptain
             case 1:
-                switch(this.enemyState){
-                    case 0:
-                        if(this.animationFrame > graphics.enemyCapitan.idleAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyCapitan.idle[this.animationFrame];
-                        this.animationFrame += 1
-                        break;
-                    case 1:
-                        if(this.animationFrame > graphics.enemyCapitan.walkAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyCapitan.walkRight[this.animationFrame];
-                        this.animationFrame += 1;
-                        break;
-                    case 2:
-                        if(this.animationFrame > graphics.enemyCapitan.attackAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyCapitan.attackRight[this.animationFrame];
-                        this.animationFrame += 1;
-                        break;
-                }
+                enemyArray = graphics.enemyCapitan
                 break;
             //enemyBigGuy
             case 2:
-                switch(this.enemyState){
-                    case 0:
-                        if(this.animationFrame > graphics.enemyBigGuy.idleAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyBigGuy.idle[this.animationFrame];
-                        this.animationFrame += 1;
-                        break;
-                    case 1:
-                        if(this.animationFrame > graphics.enemyBigGuy.walkAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyBigGuy.walkRight[this.animationFrame];
-                        this.animationFrame += 1;
-                        break;
-                    case 2:
-                        if(this.animationFrame > graphics.enemyBigGuy.attackAnimationSize-1){
-                            this.animationFrame = 0;
-                        }
-                        this.enemySprite.src = graphics.enemyBigGuy.attackRight[this.animationFrame];
-                        this.animationFrame += 1;
-                        break;
+                enemyArray = graphics.enemyBigGuy
+                break;
+        }
+
+        console.log(this.direction)
+        switch(this.direction) {
+            case 1:
+                walk = enemyArray.walkRight
+                attack = enemyArray.attackRight
+                break
+            case -1:
+                walk = enemyArray.walkLeft
+                attack = enemyArray.attackLeft
+                break
+        }
+
+        switch(this.enemyState){
+            case 0:
+                if(this.animationFrame > enemyArray.idleAnimationSize - 1){
+                    this.animationFrame = 0;
                 }
+                this.enemySprite.src = enemyArray.idle[this.animationFrame]
+                this.animationFrame+=1
+                break;
+            case 1:
+                if(this.animationFrame > enemyArray.walkAnimationSize-1){
+                    this.animationFrame = 0;
+                }
+                this.enemySprite.src = walk[this.animationFrame];
+                this.animationFrame += 1;
+                break;
+            case 2:
+                if(this.animationFrame > enemyArray.attackAnimationSize-1){
+                    this.animationFrame = 0;
+                }
+                this.enemySprite.src = attack[this.animationFrame];
+                this.animationFrame += 1;
                 break;
         }
     }
@@ -166,6 +140,7 @@ class enemy{
     }
 
     moveLeft(){
+        this.direction = -1
         this.enemyState = 1
         if (this.speedX > -this.maxSpeed) {
             this.speedX -= this.acc
@@ -173,7 +148,7 @@ class enemy{
     }
 
     moveRight(){
-        // console.log(this.speedX, this.maxSpeed)
+        this.direction = 1
         this.enemyState = 1
         if (this.speedX < this.maxSpeed) {
             this.speedX += this.acc
