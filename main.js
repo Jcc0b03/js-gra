@@ -90,10 +90,10 @@ function mainGameLoop(){
     }
 
     for(let enemyCounter = 0; enemyCounter < enemiesObjects.length; enemyCounter++){
-        enemiesObjects[enemyCounter].updatePos(obstacles);
         enemiesObjects[enemyCounter].update();
+        enemiesObjects[enemyCounter].updatePos(obstacles);
     }
-    controll.tick();
+    controll.tick()
     playerObject.update(obstacles);
     clearBombObjectsArray();
 }

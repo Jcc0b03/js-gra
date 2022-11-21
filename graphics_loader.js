@@ -26,6 +26,7 @@ const graphics = {
         walkRight: [],
         walkLeft: [],
         attackAnimationSize: 11,
+        attackRight: [],
         attackLeft: []
     },
 
@@ -36,7 +37,8 @@ const graphics = {
         walkRight: [],
         walkLeft: [],
         attackAnimationSize: 7,
-        attackRight: []
+        attackRight: [],
+        attackLeft: []
     },
     
     enemyBigGuy: {
@@ -46,7 +48,8 @@ const graphics = {
         walkRight: [],
         walkLeft: [],
         attackAnimationSize: 11,
-        attackRight: []
+        attackRight: [],
+        attackLeft: []
     },
 
     platform: {
@@ -84,7 +87,9 @@ const loadGraphics = function(){
     
     //enemy cucumber
     loadGraphic(graphics.enemyCucumber.idleAnimationSize, graphics.enemyCucumber.idle, "enemyCucumber/idle")
+    loadGraphic(graphics.enemyCucumber.walkAnimationSize, graphics.enemyCucumber.walkRight, "enemyCucumber/walkRight")
     loadGraphic(graphics.enemyCucumber.walkAnimationSize, graphics.enemyCucumber.walkLeft, "enemyCucumber/walkLeft")
+    loadGraphic(graphics.enemyCucumber.attackAnimationSize, graphics.enemyCucumber.attackRight, "enemyCucumber/attack")
     loadGraphic(graphics.enemyCucumber.attackAnimationSize, graphics.enemyCucumber.attackLeft, "enemyCucumber/attack")
 
     //enemy capitan
@@ -92,10 +97,12 @@ const loadGraphics = function(){
     loadGraphic(graphics.enemyCapitan.walkAnimationSize, graphics.enemyCapitan.walkRight, "enemyCapitan/walkRight")
     loadGraphic(graphics.enemyCapitan.walkAnimationSize, graphics.enemyCapitan.walkLeft, "enemyCapitan/walkLeft")
     loadGraphic(graphics.enemyCapitan.attackAnimationSize, graphics.enemyCapitan.attackRight, "enemyCapitan/attack")
+    loadGraphic(graphics.enemyCapitan.attackAnimationSize, graphics.enemyCapitan.attackLeft, "enemyCapitan/attack")
 
     //enemy bigGuy
     loadGraphic(graphics.enemyBigGuy.idleAnimationSize, graphics.enemyBigGuy.idle, "enemyBigGuy/idle")
     loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkRight, "enemyBigGuy/walkRight")
+    loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkLeft, "enemyBigGuy/walkRight")
     for(let i = 1; i<=graphics.enemyBigGuy.attackAnimationSize; i+=1){
         fetch(`resources/Sprites/enemyBigGuy/attack/${i}.png`).then(image => image.blob()).then(imageBlob => {
             let imageToBase64Converter = new FileReader();
