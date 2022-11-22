@@ -102,7 +102,7 @@ const loadGraphics = function(){
     //enemy bigGuy
     loadGraphic(graphics.enemyBigGuy.idleAnimationSize, graphics.enemyBigGuy.idle, "enemyBigGuy/idle")
     loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkRight, "enemyBigGuy/walkRight")
-    loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkLeft, "enemyBigGuy/walkRight")
+    loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkLeft, "enemyBigGuy/walkLeft")
     for(let i = 1; i<=graphics.enemyBigGuy.attackAnimationSize; i+=1){
         fetch(`resources/Sprites/enemyBigGuy/attack/${i}.png`).then(image => image.blob()).then(imageBlob => {
             let imageToBase64Converter = new FileReader();

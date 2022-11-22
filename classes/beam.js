@@ -1,4 +1,6 @@
 class Beam {
+    HEIGHT = 36
+    WIDTH = 36
     constructor(x, y, size, gravity=false) {
         this.x_cord = x
         this.y_cord = y

@@ -25,6 +25,46 @@ function randelement(array){
 }
 
 
+function generate_terrain(){
+    min_h = 36 * 3
+    max_h = height - 36 - 10
+    beams = []
+    enemies = []
+    numberOfBeams = 20
+    
+    start_beam = new Beam(36, min_h + 36 * 3, randint(3, 5))
+    beams.push(new Beam(0, min_h + 36 * 2, 1))
+    beams.push(start_beam)
+    
+    let prev_y = start_beam.y_cord
+    let prev_x = start_beam.x_cord + start_beam.width
+    let new_x
+    let new_y
+    let beam_size
+    for (let iter = 1; iter <= numberOfBeams; iter++){
+        new_x = prev_x + randint(3, 4) * 36
+        // console.log(new_x)
+        new_y = prev_y + randint(-3, 3) * 36
+        if (new_y != prev_y) {
+            new_x -= randint(0, 6) * 36
+        }
+
+        beam_size = randint(2, 6)
+        new_beam = new Beam(new_x, new_y, beam_size)
+        beams.push(new_beam)
+        if (beam_size >= 3){
+            enemies.push(new Enemy(randint(0, 2), new_beam.x_cord + 10, new_beam.y_cord - 100))
+        }
+        
+        prev_x = new_x + new_beam.width
+        perv_y = new_y
+    } 
+
+    
+    return [beams, enemies]
+}
+
+
 // function that checks collisions
 function collide(firstObject, secondObject){
     let fBottomRight = [firstObject.x_cord + firstObject.width, firstObject.y_cord + firstObject.height]

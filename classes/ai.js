@@ -48,18 +48,18 @@ class AIControl{
             "height": 500
         }
         
-        draw_rect(
-            this.leftDownHitbox.x_cord, 
-            this.leftDownHitbox.y_cord,
-            this.leftDownHitbox.width,
-            this.leftDownHitbox.height,
-        )
-        draw_rect(
-            this.rightDownHitbox.x_cord, 
-            this.rightDownHitbox.y_cord,
-            this.rightDownHitbox.width,
-            this.rightDownHitbox.height,
-        )
+        // draw_rect(
+        //     this.leftDownHitbox.x_cord, 
+        //     this.leftDownHitbox.y_cord,
+        //     this.leftDownHitbox.width,
+        //     this.leftDownHitbox.height,
+        // )
+        // draw_rect(
+        //     this.rightDownHitbox.x_cord, 
+        //     this.rightDownHitbox.y_cord,
+        //     this.rightDownHitbox.width,
+        //     this.rightDownHitbox.height,
+        // )
     }
 
     check_left(obstacles){

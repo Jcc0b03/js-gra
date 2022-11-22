@@ -1,4 +1,4 @@
-class enemy{
+class Enemy{
     constructor(type, x, y, timing){
         this.type = type //type 0 - cucumber; type 1 - capitan; type 2 - bigGuy
         this.ai = new AIControl(this, timing)
@@ -67,7 +67,6 @@ class enemy{
                 break;
         }
 
-        console.log(this.direction)
         switch(this.direction) {
             case 1:
                 walk = enemyArray.walkRight

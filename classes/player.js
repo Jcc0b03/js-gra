@@ -98,6 +98,16 @@ class Player{
             }
         }
         this.animationFrame += 1
+
+        // position hint
+        if (this.y_cord <= 0) {
+            draw_rect(
+            this.x_cord + 20, 
+            this.y_cord,
+            1,
+            5000,
+        )
+        }
     }
 
     async render(){
@@ -157,7 +167,7 @@ class Player{
     }
 
     jump(){
-        console.log(this.isJumping)
+        // console.log(this.isJumping)
         if (!this.isJumping && this.collide_bottom) {
             this.speedY -= this.jumpHeight
             this.isJumping = true
@@ -309,4 +319,4 @@ class Player{
     }
 }
 
-let playerObject = new Player(100, 10, 20);x=10
+let playerObject = new Player(36, 10, 20);x=10
