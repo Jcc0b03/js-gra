@@ -26,7 +26,7 @@ class Enemy{
 
         this.health = 100
         this.walk_speed = 1
-        this.run_speed = 4
+        this.run_speed = 2
         this.maxSpeed = this.walk_speed
         this.jumpHeight = 10
 
@@ -43,7 +43,7 @@ class Enemy{
     distanceFromPlayer = 0
     
     //graphics 
-    enemyState = 0 //animation state 0 - idle; 1 - walk; 3 - attack
+    enemyState = 0 //animation state 0 - idle; 1 - walk; 2 - attack
     direction = 1  // where enemy is facing; 1 - right; -1 - left
     enemySprite = new Image()
 
@@ -77,7 +77,7 @@ class Enemy{
                 attack = enemyArray.attackLeft
                 break
         }
-
+        console.log(this.enemyState)
         switch(this.enemyState){
             case 0:
                 if(this.animationFrame > enemyArray.idleAnimationSize - 1){
@@ -154,9 +154,23 @@ class Enemy{
         }
     }
 
+    shortJump(){
+        if (!this.isJumping && this.collide_bottom) {
+            this.speedY -= this.jumpHeight / 2
+            this.isJumping = true
+        } 
+    }
+
     jump(){
         if (!this.isJumping && this.collide_bottom) {
             this.speedY -= this.jumpHeight
+            this.isJumping = true
+        } 
+    }
+
+    powerJump(){
+        if (!this.isJumping && this.collide_bottom) {
+            this.speedY -= this.jumpHeight * 1.2
             this.isJumping = true
         } 
     }
@@ -259,7 +273,7 @@ class Enemy{
             this.isJumping = false
         }
 
-        this.ai.tick(obstacles)
+        this.ai.tick(obstacles, playerObject)
 
         this.X = this.x_cord
         this.Y = this.y_cord

@@ -11,25 +11,23 @@ class AIControl{
     JUMP_UP = 10
     JUMP_LEFT = 11
     JUMP_RIGHT = 12
+
+    ATTACK = 20
+
+    RANGE = 100 // jak daleko widzą enemiesy
+
+    // randomization
+    WILL_JUMP_DOWN = 64 // szansa że gdy dotrze do krawędzi, zeskoczy na niższą platformę
+
     constructor(object, timing=1){
         this.timing = timing
         this.mstime = 0
         this.object = object
         this.state = this.STAND
+        this.jumpCooldown = 0
 
-        this.leftDownHitbox = {
-            "x_cord": this.object.x_cord + this.object.width, 
-            "y_cord": this.object.y_cord - this.object.height,
-            "width": this.object.width, 
-            "height": 500
-        }
-
-        this.rightDownHitbox = {
-            "x_cord": this.object.x_cord + this.object.width, 
-            "y_cord": this.object.y_cord - this.object.height,
-            "width": this.object.width, 
-            "height": 500
-        }
+        this.leftDownHitbox
+        this.rightDownHitbox
     }
 
     update_hitboxes(){
@@ -47,39 +45,82 @@ class AIControl{
             "width": this.object.width, 
             "height": 500
         }
+
+        this.leftShortHitbox = {
+            "x_cord": this.object.x_cord - this.object.width, 
+            "y_cord": this.object.y_cord + this.object.height,
+            "width": this.object.width, 
+            "height": 50
+        }
+
         
-        // draw_rect(
-        //     this.leftDownHitbox.x_cord, 
-        //     this.leftDownHitbox.y_cord,
-        //     this.leftDownHitbox.width,
-        //     this.leftDownHitbox.height,
-        // )
-        // draw_rect(
-        //     this.rightDownHitbox.x_cord, 
-        //     this.rightDownHitbox.y_cord,
-        //     this.rightDownHitbox.width,
-        //     this.rightDownHitbox.height,
-        // )
+        this.rightShortHitbox = {
+            "x_cord": this.object.x_cord + this.object.width, 
+            "y_cord": this.object.y_cord + this.object.height,
+            "width": this.object.width, 
+            "height": 50
+        }
+
+        this.leftDetectHitbox = {
+            "x_cord": this.object.x_cord - this.object.width - this.RANGE, 
+            "y_cord": this.object.y_cord,
+            "width": this.object.width + this.RANGE, 
+            "height": this.object.height
+        }
+
+        
+        this.rightDetectHitbox = {
+            "x_cord": this.object.x_cord + this.object.width, 
+            "y_cord": this.object.y_cord,
+            "width": this.object.width + this.RANGE, 
+            "height": this.object.height
+        }
+        
+        // draw_object(this.leftDetectHitbox)
+        // draw_object(this.rightDetectHitbox)
     }
 
     check_left(obstacles){
-        let c = false
+        let long = false
+        let short = false
         obstacles.forEach(obstacle => {
             if (objCollide(obstacle, this.leftDownHitbox)){
-                c = true
+                long = true
+            }
+            if (objCollide(obstacle, this.leftShortHitbox)){
+                short = true
             }
         })
-        return c
+
+        return [long, short]
     }
 
     check_right(obstacles){
-        let c = false
+        let long = false
+        let short = false
         obstacles.forEach(obstacle => {
             if (objCollide(obstacle, this.rightDownHitbox)){
-                c = true
+                long = true
+            }
+            if (objCollide(obstacle, this.rightShortHitbox)){
+                short = true
             }
         })
-        return c
+
+        return [long, short]
+    }
+
+    look_for_player(player){
+        console.log(distance(this.object, player))
+        if (distance(this.object, player)[2] < 50){
+            return true
+        }
+        if (objCollide(this.leftDetectHitbox, player)){
+            console.log("gracz")
+            this.state = this.RUN_LEFT
+        }else if (objCollide(this.rightDetectHitbox, player)){
+            this.state = this.RUN_RIGHT
+        }
     }
 
     randomize_state(){
@@ -92,6 +133,10 @@ class AIControl{
                 this.state = randelement([this.WALK_LEFT, this.WALK_RIGHT])
             }
         }
+
+        if (randbool(10)){
+            this.object.shortJump()
+        }
     }
 
     apply_state(){
@@ -101,17 +146,40 @@ class AIControl{
                 this.object.decelerateX()
                 break
             case (this.WALK_LEFT):
+                this.object.maxSpeed = this.object.walk_speed
+                this.object.moveLeft()
+                break
+            case (this.JUMP_LEFT):
+                this.object.moveLeft()
+                this.jumpCooldown ++
+                break
+            case (this.RUN_LEFT):
+                this.object.maxSpeed = this.object.run_speed
                 this.object.moveLeft()
                 break
             case (this.WALK_RIGHT):
+                this.object.maxSpeed = this.object.walk_speed
                 this.object.moveRight()
                 break
+            case (this.JUMP_RIGHT):
+                this.object.moveRight()
+                this.jumpCooldown ++
+                break
+            case (this.RUN_RIGHT):
+                this.object.maxSpeed = this.object.run_speed
+                this.object.moveRight()
+                break
+            case (this.ATTACK):
+                this.object.decelerateX()
+                this.object.enemyState = 2
+
         }
     }
 
-    tick(obstacles){
+    tick(obstacles, player){
+        // console.log(this.state)
         this.mstime += timing
-        if (this.mstime >= 500){
+        if (this.mstime >= 700){
             this.mstime = 0
             this.randomize_state()
         }
@@ -119,12 +187,57 @@ class AIControl{
         this.apply_state()
         this.update_hitboxes()
 
-        if (!this.check_left(obstacles) && this.state == this.WALK_LEFT) {
-            this.state = this.STAND
+        let player_here = this.look_for_player(player)
+        if (player_here) {
+            this.state = this.ATTACK
         }
 
-        if (!this.check_right(obstacles) && this.state == this.WALK_RIGHT) {
+        if (this.state == this.JUMP_LEFT && this.object.collide_bottom && this.jumpCooldown >= 60) {
+            this.jumpCooldown = 0
             this.state = this.STAND
+        } else if(this.state == this.JUMP_LEFT && this.jumpCooldown >= 30){
+            this.object.speedX += 0.2
+        }
+
+        if (this.state == this.JUMP_RIGHT && this.object.collide_bottom && this.jumpCooldown >= 60) {
+            this.jumpCooldown = 0
+            this.state = this.STAND
+        } else if(this.state == this.JUMP_RIGHT && this.jumpCooldown >= 30){
+            this.object.speedX -= 0.2
+        }
+
+        let left = this.check_left(obstacles)
+        if (this.state == this.WALK_LEFT) {
+            if (left[0] && left[1]){
+                return true
+            } else if (left[0] && !left[1]){
+                if (randbool(this.WILL_JUMP_DOWN)){
+                    this.object.powerJump()
+                    this.object.speedX -= 1.2
+                    this.state = this.JUMP_LEFT
+                } else {
+                    this.state = this.STAND
+                }
+            } else {
+                this.state = this.STAND
+            }
+        }
+
+        let right = this.check_right(obstacles)
+        if (this.state == this.WALK_RIGHT) {
+            if (right[0] && right[1]){
+                return true
+            } else if (right[0] && !right[1]){
+                if (randbool(this.WILL_JUMP_DOWN)){
+                    this.object.powerJump()
+                    this.object.speedX += 1.2
+                    this.state = this.JUMP_RIGHT
+                } else {
+                    this.state = this.STAND
+                }
+            } else {
+                this.state = this.STAND
+            }
         }
     }
 }

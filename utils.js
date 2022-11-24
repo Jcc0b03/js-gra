@@ -97,3 +97,7 @@ function draw_rect(x, y, width, height){
     mainGameCanvas2dContext.rect(x, y, width, height);
     mainGameCanvas2dContext.stroke();
 }
+
+function draw_object(obj){
+    draw_rect(obj.x_cord, obj.y_cord, obj.width, obj.height)
+}

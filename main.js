@@ -72,23 +72,23 @@ let controll
 let enemiesObjects
 
 function initialization(){
-    let generated = generate_terrain()
+    // let generated = generate_terrain()
 
     obstacles = [
-        // new Beam(36, 310, 4),
-        // new Beam(36 * 7, 310, 6),
-        // new Beam(36 * 11, 160, 10),
+        new Beam(36, 310, 4),
+        new Beam(36 * 7, 310, 10),
+        new Beam(36 * 11, 160, 5),
     ]
 
-    obstacles.push(...generated[0])
+    // obstacles.push(...generated[0])
 
     enemiesObjects = [
-        // new enemy(0, 300, 0, timing),
-        // new enemy(1, 390, 0, timing),
-        // new enemy(2, 480, 0, timing),
+        new Enemy(0, 300, 0, timing),
+        new Enemy(1, 390, 0, timing),
+        new Enemy(2, 480, 0, timing),
     ]
 
-    enemiesObjects.push(...generated[1])
+    // enemiesObjects.push(...generated[1])
 
     controll = new Controll(playerObject, timing)
 }
