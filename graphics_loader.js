@@ -9,6 +9,10 @@ const graphics = {
         jumpAnimationSize: 4,
         jumpRight: [],
         jumpLeft: [],
+        deadHitAnimationSize: 6,
+        deadHit: [],
+        deadGroundAnimationSize: 4,
+        deadGround: [],
     },
 
     bomb: {
@@ -80,6 +84,8 @@ const loadGraphics = function(){
     loadGraphic(graphics.player.walkAnimationSize, graphics.player.walkLeft, "player/walkLeft")
     loadGraphic(graphics.player.jumpAnimationSize, graphics.player.jumpRight, "player/jumpRight")
     loadGraphic(graphics.player.jumpAnimationSize, graphics.player.jumpLeft, "player/jumpLeft")
+    loadGraphic(graphics.player.jumpAnimationSize, graphics.player.deadHit, "player/DeadHit")
+    loadGraphic(graphics.player.jumpAnimationSize, graphics.player.deadGround, "player/DeadGround")
 
     //loading bomb graphics
     loadGraphic(graphics.bomb.bombOnAnimationSize, graphics.bomb.bomb_on, "bomb/on")
@@ -103,6 +109,7 @@ const loadGraphics = function(){
     loadGraphic(graphics.enemyBigGuy.idleAnimationSize, graphics.enemyBigGuy.idle, "enemyBigGuy/idle")
     loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkRight, "enemyBigGuy/walkRight")
     loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.walkLeft, "enemyBigGuy/walkLeft")
+    loadGraphic(graphics.enemyBigGuy.walkAnimationSize, graphics.enemyBigGuy.attackLeft, "enemyBigGuy/attack")
     for(let i = 1; i<=graphics.enemyBigGuy.attackAnimationSize; i+=1){
         fetch(`resources/Sprites/enemyBigGuy/attack/${i}.png`).then(image => image.blob()).then(imageBlob => {
             let imageToBase64Converter = new FileReader();

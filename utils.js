@@ -99,5 +99,25 @@ function draw_rect(x, y, width, height){
 }
 
 function draw_object(obj){
+    console.log("draw rexrt", obj)
     draw_rect(obj.x_cord, obj.y_cord, obj.width, obj.height)
+}
+
+function draw_healthbar(obj, health, maxHealth){
+    let x = obj.x_cord
+    let y = obj.y_cord
+    let maxWidth = obj.width
+    let height = obj.height
+
+    let percent = health / maxHealth
+    let width = maxWidth * percent
+
+    if (percent <= 0.3){
+        mainGameCanvas2dContext.fillStyle = "red"
+    } else {
+        mainGameCanvas2dContext.fillStyle = "green"
+    }
+
+    mainGameCanvas2dContext.fillRect(x, y, width, height)
+    draw_rect(x, y, maxWidth, height)
 }

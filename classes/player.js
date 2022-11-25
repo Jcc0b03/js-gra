@@ -2,10 +2,16 @@
 
 
 class Player{
+    ALIVE = "alive"
+    DYING = "dying"
+    DEAD = "dead"
+
     constructor(x, y, health, maxSpeed=3, jumpHeight=12){
+        this.maxHealth = health
         this.health = health
         this.maxSpeed = maxSpeed
         this.jumpHeight = jumpHeight
+        this.alive = this.ALIVE
 
         this.speedX = 1
         this.speedY = -8
@@ -23,6 +29,13 @@ class Player{
         //hitbox size
         this.width = 58
         this.height = 58
+
+        this.healtbar = {
+            "x_cord": 10, 
+            "y_cord": 10,
+            "width": 80, 
+            "height": 10
+        }
 
         this.isJumping = false
         this.collide_bottom = false
@@ -52,7 +65,25 @@ class Player{
     playerAnimationFrame = 0
 
     async animate(){
-        if(!this.isJumping){
+        if (this.alive != this.ALIVE){
+            switch (this.alive){
+                case this.DYING:
+                    if(Math.round(this.animationFrame/4) > graphics.player.deadHitAnimationSize-1){
+                        this.alive = this.DEAD
+                        this.animationFrame = 0
+                    }
+                    this.playerSprite.src = graphics.player.deadHit[Math.round(this.animationFrame/4)];
+                    break
+                case this.DEAD:
+                    if(Math.round(this.animationFrame/7) > graphics.player.deadGroundAnimationSize-1){
+                        this.animationFrame = 0
+                    }
+                    this.playerSprite.src = graphics.player.deadGround[Math.round(this.animationFrame/7)];
+                    break
+            }
+
+        }
+        else if(!this.isJumping){
             switch(this.playerState){
                 case 0:
                     if(this.animationFrame > graphics.player.idleAnimationSize-1){
@@ -112,6 +143,7 @@ class Player{
 
     async render(){
         await mainGameCanvas2dContext.drawImage(this.playerSprite, this.x_cord, this.y_cord)
+        draw_healthbar(this.healtbar, this.health, this.maxHealth)
     }
 
     // update(){
@@ -132,6 +164,17 @@ class Player{
     }
 
     //////////////////////////////////////
+
+    receive_damage(damage){
+        if (this.alive == this.ALIVE){
+            if (this.health - damage > 0){
+                this.health -= damage
+            } else if (this.health - damage <= 0){
+                this.health = 0
+                this.alive = this.DYING
+            }
+        }
+    }
 
     checkHor(cord) {
         return 0 < cord && cord < this.maxH
@@ -160,7 +203,7 @@ class Player{
     }
 
     moveRight(){
-        console.log(this.speedX, this.maxSpeed)
+        // console.log(this.speedX, this.maxSpeed)
         if (this.speedX < this.maxSpeed) {
             this.speedX += this.acc
         }
@@ -319,4 +362,4 @@ class Player{
     }
 }
 
-let playerObject = new Player(36, 10, 20);x=10
+let playerObject = new Player(36, 10, 300);x=10

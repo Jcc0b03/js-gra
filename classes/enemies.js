@@ -19,12 +19,15 @@ class Enemy{
 
         this.hitbox = {
             "x_cord": this.x_cord, 
-            "y_cord": this.y_cordt,
+            "y_cord": this.y_cord,
             "width": this.width, 
             "height": this.height
         }
 
-        this.health = 100
+        this.healthbar = {}
+
+        this.maxHealth = 100
+        this.health = this.maxHealth
         this.walk_speed = 1
         this.run_speed = 2
         this.maxSpeed = this.walk_speed
@@ -77,7 +80,7 @@ class Enemy{
                 attack = enemyArray.attackLeft
                 break
         }
-        console.log(this.enemyState)
+        // console.log(this.enemyState)
         switch(this.enemyState){
             case 0:
                 if(this.animationFrame > enemyArray.idleAnimationSize - 1){
@@ -105,10 +108,17 @@ class Enemy{
 
     async render(){
         await mainGameCanvas2dContext.drawImage(this.enemySprite, this.X, this.Y)
+        draw_healthbar(this.healthbar, this.health, this.maxHealth)
     }
 
     update(){
        this.distanceFromPlayer = this.calculateDistanceFromPlayer();
+       this.healthbar = {
+        "x_cord": this.x_cord, 
+        "y_cord": this.y_cord - 10,
+        "width": this.width, 
+        "height": 5
+        }
        clearEnemies();
     }
 

@@ -1,6 +1,7 @@
 class AIControl{
     TIMING = 0
 
+    // states constants
     STAND = 0
     WALK_LEFT = 1
     WALK_RIGHT = 2
@@ -13,6 +14,7 @@ class AIControl{
     JUMP_RIGHT = 12
 
     ATTACK = 20
+    // end
 
     RANGE = 100 // jak daleko widzą enemiesy
 
@@ -25,6 +27,7 @@ class AIControl{
         this.object = object
         this.state = this.STAND
         this.jumpCooldown = 0
+        this.playerKilled = false
 
         this.leftDownHitbox
         this.rightDownHitbox
@@ -111,7 +114,15 @@ class AIControl{
     }
 
     look_for_player(player){
-        console.log(distance(this.object, player))
+        // console.log(distance(this.object, player))
+        console.log(this.playerKilled)
+        if (playerObject.alive == playerObject.DYING){
+            this.playerKilled = true
+            this.state = this.STAND
+        }
+        if (this.playerKilled){
+            return
+        }
         if (distance(this.object, player)[2] < 50){
             return true
         }
@@ -120,6 +131,9 @@ class AIControl{
             this.state = this.RUN_LEFT
         }else if (objCollide(this.rightDetectHitbox, player)){
             this.state = this.RUN_RIGHT
+        } // no longer see player
+        else if ([this.RUN_LEFT, this.RUN_RIGHT].includes(this.state)){
+            this.state = this.STAND
         }
     }
 
@@ -172,6 +186,7 @@ class AIControl{
             case (this.ATTACK):
                 this.object.decelerateX()
                 this.object.enemyState = 2
+                playerObject.receive_damage(1)
 
         }
     }
