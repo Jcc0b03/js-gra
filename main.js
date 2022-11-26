@@ -69,7 +69,7 @@ let movementLeft = false;
 // game elements init
 let obstacles
 let controll
-let enemiesObjects
+let enemiesObjects = []
 
 function initialization(){
     // let generated = generate_terrain()

@@ -50,6 +50,11 @@ class Controll {
             if (e.key == this.bomb){
                 this.isBomb = true
             }
+            // cheats
+            if (e.key == "0"){
+                this.player.alive = this.player.ALIVE
+                this.player.health = this.player.maxHealth
+            }
         })
         this.body.addEventListener("keyup", (e) => {
             // if (e.key == this.keyUp){
@@ -74,6 +79,10 @@ class Controll {
     }
 
     tick(){
+        if (this.player.alive != this.player.ALIVE){
+            this.player.decelerateX()
+            return
+        }
         if (this.isKeyUp){
             this.player.moveUp()
         }
@@ -89,12 +98,15 @@ class Controll {
                 this.player.moveRight()
             }else{
                 this.player.stop();
+                // scrollingSpeed = playerObject.speedX
                 accScrolling();
             }
             this.player.setState(2)
-        }else{
+        } else {
+            // scrollingSpeed = playerObject.speedX
             decScrolling();
         }
+
         if (this.isJump) {
             this.player.jump()
         }
@@ -121,6 +133,8 @@ class Controll {
 
 
 //scrolling works only to right
+// TODO make it work not only when keys are pressed
+// (i.e. when player is thrown by a bomb, screen doesn't scroll)
 function accScrolling(){
     if(scrollingSpeed < playerObject.maxSpeed){
         scrollingSpeed += playerObject.acc;

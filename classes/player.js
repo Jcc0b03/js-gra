@@ -272,6 +272,9 @@ class Player{
 
     update(obstacles){
         this.speedY += this.gravity
+        if (this.y_cord > height * 2){
+            this.receive_damage(30)
+        }
 
         let newX = this.x_cord + this.speedX
         let newY = this.y_cord + this.speedY
@@ -362,4 +365,4 @@ class Player{
     }
 }
 
-let playerObject = new Player(36, 10, 300);x=10
+let playerObject = new Player(36, 10, 300)

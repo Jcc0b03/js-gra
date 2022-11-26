@@ -114,15 +114,16 @@ class AIControl{
     }
 
     look_for_player(player){
-        // console.log(distance(this.object, player))
-        console.log(this.playerKilled)
         if (playerObject.alive == playerObject.DYING){
             this.playerKilled = true
             this.state = this.STAND
+        } else if (playerObject.alive == playerObject.ALIVE){
+            this.playerKilled = false
         }
         if (this.playerKilled){
             return
         }
+
         if (distance(this.object, player)[2] < 50){
             return true
         }
@@ -236,6 +237,12 @@ class AIControl{
             } else {
                 this.state = this.STAND
             }
+        } else if (this.state == this.RUN_LEFT){
+            if (!left[1]) {
+                this.object.jump()
+                this.object.speedX -= 0.5
+                this.state = this.JUMP_LEFT
+            }
         }
 
         let right = this.check_right(obstacles)
@@ -252,6 +259,12 @@ class AIControl{
                 }
             } else {
                 this.state = this.STAND
+            }
+        } else if (this.state == this.RUN_RIGHT){
+            if (!right[1]) {
+                this.object.jump()
+                this.object.speedX += 0.5
+                this.state = this.JUMP_RIGHT
             }
         }
     }
