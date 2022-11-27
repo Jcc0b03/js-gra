@@ -17,6 +17,8 @@ class Bomb{
     frameCounter = 0;
     
     exploded = false;
+    blow_power_x = 10
+    blow_power_y = 16
 
     animate(){
         if(!this.exploded){
@@ -87,15 +89,39 @@ class Bomb{
     }
 
     recoilPlayer(){
-        console.log(distance(this, playerObject));
+        let [bomb_x, bomb_y, bomb_dist] = [...distance(this, playerObject)]
+        let x_percent
+        let y_percent
+        bomb_y += 31
+        
         if(distance(this, playerObject)[2] <= this.range){
-            if(playerObject.x_cord > this.x_cord+10){
-                playerObject.addSpeedX(7);
-                playerObject.addSpeedY(15);
-            }else if(playerObject.x_cord < this.x_cord-10){
-                playerObject.addSpeedX(-7);
-                playerObject.addSpeedY(15);
+            if (bomb_x < 0) {
+                x_percent = Math.abs(-this.range - bomb_x)/this.range
+            } else if (bomb_x == 0) {
+                x_percent = 0
+            } else {
+                x_percent = -((this.range - bomb_x)/this.range)
             }
+
+            if (bomb_y <= 0) {
+                y_percent = Math.abs(-this.range - bomb_y)/this.range
+            } else {
+                y_percent = -((this.range - bomb_y)/this.range)
+            }
+
+            console.log(this.blow_power * x_percent, this.blow_power * y_percent)
+            playerObject.addSpeedX(this.blow_power_x * x_percent)
+            playerObject.addSpeedY(this.blow_power_y * -y_percent)
+            // if(playerObject.x_cord > this.x_cord+10){
+            //     playerObject.addSpeedX(7);
+            //     playerObject.addSpeedY(15);
+            // }else if(playerObject.x_cord < this.x_cord-10){
+            //     playerObject.addSpeedX(-7);
+            //     playerObject.addSpeedY(15);
+            // } else {
+            //     playerObject.addSpeedY(14)
+            // }
+
         }
     }
 

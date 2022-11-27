@@ -25,8 +25,19 @@ class Enemy{
         }
 
         this.healthbar = {}
+        switch(type){
+            case 0:
+                this.maxHealth = 40
+                break
+            case 1:
+                this.maxHealth = 75
+                break
+            case 2:
+                this.maxHealth = 125
+                break
 
-        this.maxHealth = 100
+        }
+        console.log(type, this.maxHealth)
         this.health = this.maxHealth
         this.walk_speed = 1
         this.run_speed = 2
