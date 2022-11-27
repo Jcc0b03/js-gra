@@ -159,7 +159,7 @@ class Player{
     }
 
     dropBomb(timeToBoom=1000){
-        let bomb = new Bomb(timeToBoom, 100, 25, this.x_cord, this.y_cord-30);
+        let bomb = new Bomb(timeToBoom, 100, 50, this.x_cord, this.y_cord-30);
         bombObjects.push(bomb);
     }
 

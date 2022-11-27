@@ -59,6 +59,11 @@ const graphics = {
     platform: {
         idleAnimationSize: 1,
         idle: []
+    },
+
+    mainMenuText: {
+        idleAnimationSize: 1,
+        idle: []
     }
 
 }
@@ -134,7 +139,9 @@ const loadGraphics = function(){
             imageToBase64Converter.readAsDataURL(imageBlob);
         })
     }
-
+    
+    //main menu text
+    loadGraphic(graphics.mainMenuText.idleAnimationSize, graphics.mainMenuText.idle, "mainMenu")
     console.log(graphics)
 }
 
