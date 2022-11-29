@@ -97,10 +97,11 @@ function initialization(){
     // let generated = generate_terrain()
 
     obstacles = [
-        newB(11, 5, 5),
+        newB(10, 5, 5),
         newB(1, 9, 4),
         newB(4, 3, 2),
         newB(7, 9, 10),
+        newB(18, 8, 5),
     ]
 
     // obstacles.push(...generated[0])
