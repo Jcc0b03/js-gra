@@ -84,6 +84,10 @@ async function animationHandler(){
 let movementRight = false;
 let movementLeft = false;
 
+function newB(x, y, width){
+    return new Beam(36 * x, 36 * y, width)
+}
+
 // game elements init
 let obstacles
 let controll
@@ -93,9 +97,10 @@ function initialization(){
     // let generated = generate_terrain()
 
     obstacles = [
-        new Beam(36, 310, 4),
-        new Beam(36 * 7, 310, 10),
-        new Beam(36 * 11, 160, 5),
+        newB(11, 5, 5),
+        newB(1, 9, 4),
+        newB(4, 3, 2),
+        newB(7, 9, 10),
     ]
 
     // obstacles.push(...generated[0])
@@ -112,6 +117,8 @@ function initialization(){
 }
 
 function mainGameLoop(){
+    // to delete
+    gameState = 1
     switch(gameState){
         case 0:
             
